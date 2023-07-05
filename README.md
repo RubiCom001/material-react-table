@@ -1,4 +1,4 @@
-# Material React Table
+ # Material React Table
 
 View [Documentation](https://www.material-react-table.com/)
 
