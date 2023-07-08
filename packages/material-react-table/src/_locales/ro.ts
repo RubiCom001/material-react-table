@@ -4,6 +4,8 @@ export const MRT_Localization_RO: MRT_Localization = {
   actions: 'Acțiuni',
   and: 'și',
   cancel: 'Anulează',
+  merge: 'Merge',
+  dismiss: 'Dismiss',
   changeFilterMode: 'Schimbă mod filtru',
   changeSearchMode: 'Schimbă mod căutare',
   clearFilter: 'Curăță filtrarea',

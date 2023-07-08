@@ -4,6 +4,8 @@ export const MRT_Localization_FI: MRT_Localization = {
   actions: 'Toiminnot',
   and: 'ja',
   cancel: 'Peruuta',
+  merge: 'Merge',
+  dismiss: 'Dismiss',
   changeFilterMode: 'Muuta suodattimen tilaa',
   changeSearchMode: 'Muuta hakutapaa',
   clearFilter: 'Tyhjennä suodatin',

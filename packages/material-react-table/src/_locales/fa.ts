@@ -4,6 +4,8 @@ export const MRT_Localization_FA: MRT_Localization = {
   actions: 'عملیات',
   and: 'و',
   cancel: 'انصراف',
+  merge: 'Merge',
+  dismiss: 'Dismiss',
   changeFilterMode: 'تغییر حالت فیلتر',
   changeSearchMode: 'تغییر حالت جستجو',
   clearFilter: 'پاک کردن فیلتر',

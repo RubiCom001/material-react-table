@@ -4,6 +4,8 @@ export const MRT_Localization_ID: MRT_Localization = {
   actions: 'Aksi',
   and: 'dan',
   cancel: 'Batal',
+  merge: 'Merge',
+  dismiss: 'Dismiss',
   changeFilterMode: 'Ubah mode filter',
   changeSearchMode: 'Ubah mode pencarian',
   clearFilter: 'Hapus filter',

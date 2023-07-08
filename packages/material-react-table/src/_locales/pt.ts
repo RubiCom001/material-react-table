@@ -4,6 +4,8 @@ export const MRT_Localization_PT: MRT_Localization = {
   actions: 'Ações',
   and: 'e',
   cancel: 'Cancelar',
+  merge: 'Merge',
+  dismiss: 'Dismiss',
   changeFilterMode: 'Alterar o modo de filtro',
   changeSearchMode: 'Alterar o modo de pesquisa',
   clearFilter: 'Limpar filtros',

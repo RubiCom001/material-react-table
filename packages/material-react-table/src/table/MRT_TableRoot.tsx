@@ -112,6 +112,12 @@ export const MRT_TableRoot: any = <TData extends Record<string, any> = {}>(
   const [isFullScreen, setIsFullScreen] = useState<boolean>(
     initialState?.isFullScreen ?? false,
   );
+  const [isEditInConflict, setIsEditInConflict] = useState<boolean>(
+    initialState?.isEditInConflict ?? false,
+  );
+  const [isEditWithErrors, setIsEditWithErrors] = useState<boolean>(
+    initialState?.isEditWithErrors ?? false,
+  );
   const [showAlertBanner, setShowAlertBanner] = useState<boolean>(
     props.initialState?.showAlertBanner ?? false,
   );
@@ -322,6 +328,8 @@ export const MRT_TableRoot: any = <TData extends Record<string, any> = {}>(
         hoveredColumn,
         hoveredRow,
         isFullScreen,
+        isEditWithErrors,
+        isEditInConflict,
         showAlertBanner,
         showColumnFilters,
         showGlobalFilter,
@@ -349,6 +357,8 @@ export const MRT_TableRoot: any = <TData extends Record<string, any> = {}>(
     setHoveredColumn: props.onHoveredColumnChange ?? setHoveredColumn,
     setHoveredRow: props.onHoveredRowChange ?? setHoveredRow,
     setIsFullScreen: props.onIsFullScreenChange ?? setIsFullScreen,
+    setIsEditInConflict: props.onIsEditInConflict ?? setIsEditInConflict,
+    setIsEditWithErrors: props.onIsEditWithErrors ?? setIsEditWithErrors,
     setShowAlertBanner: props.onShowAlertBannerChange ?? setShowAlertBanner,
     setShowColumnFilters:
       props.onShowColumnFiltersChange ?? setShowColumnFilters,

@@ -26,6 +26,8 @@ import SearchOffIcon from '@mui/icons-material/SearchOff';
 import SortIcon from '@mui/icons-material/Sort';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import DismissIcon from '@mui/icons-material/RemoveRoad';
+import MergeIcon from '@mui/icons-material/AddRoad';
 
 export interface MRT_Icons {
   ArrowDownwardIcon: any;
@@ -56,6 +58,8 @@ export interface MRT_Icons {
   SortIcon: any;
   ViewColumnIcon: any;
   VisibilityOffIcon: any;
+  DismissIcon: any;
+  MergeIcon: any;
 }
 
 export const MRT_Default_Icons: MRT_Icons = {
@@ -87,4 +91,6 @@ export const MRT_Default_Icons: MRT_Icons = {
   SortIcon,
   ViewColumnIcon,
   VisibilityOffIcon,
+  DismissIcon,
+  MergeIcon,
 };

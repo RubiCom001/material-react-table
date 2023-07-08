@@ -4,6 +4,8 @@ export const MRT_Localization_SR_LATN_RS: MRT_Localization = {
   actions: 'Akcije',
   and: 'i',
   cancel: 'Otkaži',
+  merge: 'Merge',
+  dismiss: 'Dismiss',
   changeFilterMode: 'Promeni režim filtriranja',
   changeSearchMode: 'Promeni režim pretrage',
   clearFilter: 'Poništi filter',
