@@ -1,0 +1,33 @@
+export interface MRT_Icons {
+    ArrowDownwardIcon: any;
+    ArrowRightIcon: any;
+    CancelIcon: any;
+    ClearAllIcon: any;
+    CloseIcon: any;
+    DensityLargeIcon: any;
+    DensityMediumIcon: any;
+    DensitySmallIcon: any;
+    KeyboardDoubleArrowDownIcon: any;
+    DragHandleIcon: any;
+    DynamicFeedIcon: any;
+    EditIcon: any;
+    ExpandMoreIcon: any;
+    FilterAltIcon: any;
+    FilterListIcon: any;
+    FilterListOffIcon: any;
+    FullscreenExitIcon: any;
+    FullscreenIcon: any;
+    MoreHorizIcon: any;
+    MoreVertIcon: any;
+    PushPinIcon: any;
+    RestartAltIcon: any;
+    SaveIcon: any;
+    SearchIcon: any;
+    SearchOffIcon: any;
+    SortIcon: any;
+    ViewColumnIcon: any;
+    VisibilityOffIcon: any;
+    DismissIcon: any;
+    MergeIcon: any;
+}
+export declare const MRT_Default_Icons: MRT_Icons;
