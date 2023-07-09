@@ -526,8 +526,8 @@ const MRT_Localization_EN = {
     actions: 'Actions',
     and: 'and',
     cancel: 'Cancel',
-    merge: 'Merge',
-    dismiss: 'Dismiss',
+    merge: 'Merge (Remote Wins)',
+    dismiss: 'Dismiss Remote',
     changeFilterMode: 'Change filter mode',
     changeSearchMode: 'Change search mode',
     clearFilter: 'Clear filter',
@@ -1002,7 +1002,7 @@ const MRT_RowActionMenu = ({ anchorEl, handleEdit, row, setAnchorEl, table, }) =
 };
 
 const MRT_EditActionButtons = ({ row, table, variant = 'icon', }) => {
-    const { getState, options: { icons: { CancelIcon, SaveIcon, DismissIcon, MergeIcon }, localization, onEditingRowSave, onEditingRowCancel, onEditingRowMerge, onEditingRowDismiss, }, refs: { editInputRefs }, setEditingRow, } = table;
+    const { getState, options: { icons: { CancelIcon, SaveIcon, DismissIcon, MergeIcon }, localization, onEditingRowSave, onEditingRowCancel, onEditingRowMerge, onEditingRowDismiss, }, refs: { editInputRefs }, setEditingRow, setIsEditInConflict, } = table;
     const { editingRow } = getState();
     const { isEditInConflict } = getState();
     const { isEditWithErrors } = getState();
@@ -1012,6 +1012,7 @@ const MRT_EditActionButtons = ({ row, table, variant = 'icon', }) => {
     };
     const handleDismiss = () => {
         onEditingRowDismiss === null || onEditingRowDismiss === void 0 ? void 0 : onEditingRowDismiss({ row, table });
+        setIsEditInConflict(false);
         //setEditingRow(null);
     };
     const handleSave = () => {
@@ -1047,12 +1048,13 @@ const MRT_EditActionButtons = ({ row, table, variant = 'icon', }) => {
             table,
             values: (_b = editingRow === null || editingRow === void 0 ? void 0 : editingRow._valuesCache) !== null && _b !== void 0 ? _b : Object.assign({}, row.original),
         });
+        setIsEditInConflict(false);
     };
     console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`);
     return (jsxRuntime.jsx(Box__default["default"], { onClick: (e) => e.stopPropagation(), sx: { display: 'flex', gap: '0.75rem' }, children: variant === 'icon' ? (jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [isEditInConflict &&
-                    jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.merge, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.merge, color: "info", onClick: handleMerge, children: jsxRuntime.jsx(MergeIcon, {}) }) }), jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.dismiss, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.dismiss, color: "info", onClick: handleDismiss, children: jsxRuntime.jsx(DismissIcon, {}) }) })] }), jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.cancel, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.cancel, onClick: handleCancel, children: jsxRuntime.jsx(CancelIcon, {}) }) }), !isEditWithErrors &&
+                    jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.merge, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.merge, color: "info", onClick: handleMerge, children: jsxRuntime.jsx(MergeIcon, {}) }) }), jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.dismiss, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.dismiss, color: "info", onClick: handleDismiss, children: jsxRuntime.jsx(DismissIcon, {}) }) })] }), jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: !isEditInConflict ? localization.cancel : "Accept Remote", children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.cancel, onClick: handleCancel, children: jsxRuntime.jsx(CancelIcon, {}) }) }), !(isEditWithErrors || isEditInConflict) &&
                     jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.save, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.save, color: "info", onClick: handleSave, children: jsxRuntime.jsx(SaveIcon, {}) }) })] })) : (jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [isEditInConflict &&
-                    jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [jsxRuntime.jsx(Button__default["default"], { onClick: handleMerge, variant: "contained", children: localization.merge }), jsxRuntime.jsx(Button__default["default"], { onClick: handleDismiss, variant: "contained", children: localization.dismiss })] }), jsxRuntime.jsx(Button__default["default"], { onClick: handleCancel, children: localization.cancel }), !isEditWithErrors &&
+                    jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [jsxRuntime.jsx(Button__default["default"], { onClick: handleMerge, variant: "contained", children: localization.merge }), jsxRuntime.jsx(Button__default["default"], { onClick: handleDismiss, variant: "contained", children: localization.dismiss })] }), jsxRuntime.jsx(Button__default["default"], { onClick: handleCancel, children: !isEditInConflict ? localization.cancel : "Accept Remote" }), !(isEditWithErrors || isEditInConflict) &&
                     jsxRuntime.jsxs(Button__default["default"], { onClick: handleSave, variant: "contained", children: [" ", localization.save] })] })) }));
 };
 

@@ -27,6 +27,7 @@ export const MRT_EditActionButtons = <TData extends Record<string, any> = {}>({
     },
     refs: { editInputRefs },
     setEditingRow,
+    setIsEditInConflict,
   } = table;
   const { editingRow } = getState();
   const { isEditInConflict } = getState();
@@ -38,6 +39,7 @@ export const MRT_EditActionButtons = <TData extends Record<string, any> = {}>({
   };
   const handleDismiss = () => {
     onEditingRowDismiss?.({ row, table });
+    setIsEditInConflict(false);
     //setEditingRow(null);
   };
   const handleSave = () => {
@@ -76,6 +78,7 @@ export const MRT_EditActionButtons = <TData extends Record<string, any> = {}>({
       table,
       values: editingRow?._valuesCache ?? { ...row.original },
     });
+    setIsEditInConflict(false);
   };
 console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`)
   return (
@@ -107,12 +110,12 @@ console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`)
           </Tooltip>
           </>
         }
-          <Tooltip arrow title={localization.cancel}>
+          <Tooltip arrow title={!isEditInConflict? localization.cancel:"Accept Remote"}>
             <IconButton aria-label={localization.cancel} onClick={handleCancel}>
               <CancelIcon />
             </IconButton>
           </Tooltip>
-        { !isEditWithErrors &&
+        { !(isEditWithErrors || isEditInConflict) &&
           <Tooltip arrow title={localization.save}>
             <IconButton
               aria-label={localization.save}
@@ -132,8 +135,8 @@ console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`)
           <Button onClick={handleDismiss} variant="contained" >{localization.dismiss}</Button>
         </>
         }
-          <Button onClick={handleCancel}>{localization.cancel}</Button>
-        { !isEditWithErrors &&
+          <Button onClick={handleCancel}>{!isEditInConflict? localization.cancel:"Accept Remote"}</Button>
+        { !(isEditWithErrors || isEditInConflict) &&
           <Button onClick={handleSave} variant="contained"> {localization.save}</Button>
         }
         </>

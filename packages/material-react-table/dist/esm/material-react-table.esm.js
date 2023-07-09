@@ -445,8 +445,8 @@ const MRT_Localization_EN = {
     actions: 'Actions',
     and: 'and',
     cancel: 'Cancel',
-    merge: 'Merge',
-    dismiss: 'Dismiss',
+    merge: 'Merge (Remote Wins)',
+    dismiss: 'Dismiss Remote',
     changeFilterMode: 'Change filter mode',
     changeSearchMode: 'Change search mode',
     clearFilter: 'Clear filter',
@@ -921,7 +921,7 @@ const MRT_RowActionMenu = ({ anchorEl, handleEdit, row, setAnchorEl, table, }) =
 };
 
 const MRT_EditActionButtons = ({ row, table, variant = 'icon', }) => {
-    const { getState, options: { icons: { CancelIcon, SaveIcon, DismissIcon, MergeIcon }, localization, onEditingRowSave, onEditingRowCancel, onEditingRowMerge, onEditingRowDismiss, }, refs: { editInputRefs }, setEditingRow, } = table;
+    const { getState, options: { icons: { CancelIcon, SaveIcon, DismissIcon, MergeIcon }, localization, onEditingRowSave, onEditingRowCancel, onEditingRowMerge, onEditingRowDismiss, }, refs: { editInputRefs }, setEditingRow, setIsEditInConflict, } = table;
     const { editingRow } = getState();
     const { isEditInConflict } = getState();
     const { isEditWithErrors } = getState();
@@ -931,6 +931,7 @@ const MRT_EditActionButtons = ({ row, table, variant = 'icon', }) => {
     };
     const handleDismiss = () => {
         onEditingRowDismiss === null || onEditingRowDismiss === void 0 ? void 0 : onEditingRowDismiss({ row, table });
+        setIsEditInConflict(false);
         //setEditingRow(null);
     };
     const handleSave = () => {
@@ -966,12 +967,13 @@ const MRT_EditActionButtons = ({ row, table, variant = 'icon', }) => {
             table,
             values: (_b = editingRow === null || editingRow === void 0 ? void 0 : editingRow._valuesCache) !== null && _b !== void 0 ? _b : Object.assign({}, row.original),
         });
+        setIsEditInConflict(false);
     };
     console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`);
     return (jsx(Box, { onClick: (e) => e.stopPropagation(), sx: { display: 'flex', gap: '0.75rem' }, children: variant === 'icon' ? (jsxs(Fragment, { children: [isEditInConflict &&
-                    jsxs(Fragment, { children: [jsx(Tooltip, { arrow: true, title: localization.merge, children: jsx(IconButton, { "aria-label": localization.merge, color: "info", onClick: handleMerge, children: jsx(MergeIcon, {}) }) }), jsx(Tooltip, { arrow: true, title: localization.dismiss, children: jsx(IconButton, { "aria-label": localization.dismiss, color: "info", onClick: handleDismiss, children: jsx(DismissIcon, {}) }) })] }), jsx(Tooltip, { arrow: true, title: localization.cancel, children: jsx(IconButton, { "aria-label": localization.cancel, onClick: handleCancel, children: jsx(CancelIcon, {}) }) }), !isEditWithErrors &&
+                    jsxs(Fragment, { children: [jsx(Tooltip, { arrow: true, title: localization.merge, children: jsx(IconButton, { "aria-label": localization.merge, color: "info", onClick: handleMerge, children: jsx(MergeIcon, {}) }) }), jsx(Tooltip, { arrow: true, title: localization.dismiss, children: jsx(IconButton, { "aria-label": localization.dismiss, color: "info", onClick: handleDismiss, children: jsx(DismissIcon, {}) }) })] }), jsx(Tooltip, { arrow: true, title: !isEditInConflict ? localization.cancel : "Accept Remote", children: jsx(IconButton, { "aria-label": localization.cancel, onClick: handleCancel, children: jsx(CancelIcon, {}) }) }), !(isEditWithErrors || isEditInConflict) &&
                     jsx(Tooltip, { arrow: true, title: localization.save, children: jsx(IconButton, { "aria-label": localization.save, color: "info", onClick: handleSave, children: jsx(SaveIcon, {}) }) })] })) : (jsxs(Fragment, { children: [isEditInConflict &&
-                    jsxs(Fragment, { children: [jsx(Button, { onClick: handleMerge, variant: "contained", children: localization.merge }), jsx(Button, { onClick: handleDismiss, variant: "contained", children: localization.dismiss })] }), jsx(Button, { onClick: handleCancel, children: localization.cancel }), !isEditWithErrors &&
+                    jsxs(Fragment, { children: [jsx(Button, { onClick: handleMerge, variant: "contained", children: localization.merge }), jsx(Button, { onClick: handleDismiss, variant: "contained", children: localization.dismiss })] }), jsx(Button, { onClick: handleCancel, children: !isEditInConflict ? localization.cancel : "Accept Remote" }), !(isEditWithErrors || isEditInConflict) &&
                     jsxs(Button, { onClick: handleSave, variant: "contained", children: [" ", localization.save] })] })) }));
 };
 

@@ -2,8 +2,8 @@ import { type MRT_Localization } from '../types';
 
 export const MRT_Localization_NO: MRT_Localization = {
   cancel: 'Avbryt',
-  merge: 'Merge',
-  dismiss: 'Dismiss',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   actions: 'Handlinger',
   and: 'og',
   changeFilterMode: 'Endre filtermodus',
