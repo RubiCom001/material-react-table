@@ -1066,18 +1066,18 @@ const MRT_EditActionButtons = ({ row, table, variant = 'icon', onValueChange, })
             if (input.value !== undefined &&
                 Object.hasOwn(editingRow === null || editingRow === void 0 ? void 0 : editingRow._valuesCache, input.name)) {
                 // @ts-ignore
-                console.log("Setting editingRow._valuesCache: ", input.name, " value: ", editingRow._valuesCache[input.name]);
+                //console.log("Setting editingRow._valuesCache: ", input.name, " value: ", editingRow._valuesCache[input.name]);
                 // @ts-ignore
                 editingRow._valuesCache[input.name] = input.value;
             }
         });
-        console.log("beforeOnEditRowMerge");
+        //console.log("beforeOnEditRowMerge");
         yield (onEditingRowMerge === null || onEditingRowMerge === void 0 ? void 0 : onEditingRowMerge({
             row: editingRow !== null && editingRow !== void 0 ? editingRow : row,
             table,
             values: (_b = editingRow === null || editingRow === void 0 ? void 0 : editingRow._valuesCache) !== null && _b !== void 0 ? _b : Object.assign({}, row.original),
         }));
-        console.log("afterOnEditRowMerge");
+        //console.log("afterOnEditRowMerge");
         (_c = Object.values(editInputRefs === null || editInputRefs === void 0 ? void 0 : editInputRefs.current)) === null || _c === void 0 ? void 0 : _c.forEach((input) => {
             var _a;
             if (editingRow) {
@@ -1087,13 +1087,13 @@ const MRT_EditActionButtons = ({ row, table, variant = 'icon', onValueChange, })
                 const v = editingRow._valuesCache[n];
                 if (onValueChange) {
                     onValueChange(n, v);
-                    console.log("Setting input value: ", n, " value: ", v);
+                    //console.log("Setting input value: ", n, " value: ", v);
                 }
             }
         });
         //setIsEditInConflict(false);
     });
-    console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`);
+    //console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`)
     return (jsxRuntime.jsx(Box__default["default"], { onClick: (e) => e.stopPropagation(), sx: { display: 'flex', gap: '0.75rem' }, children: variant === 'icon' ? (jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [isEditInConflict &&
                     jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.merge, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.merge, color: "info", onClick: handleMerge, children: jsxRuntime.jsx(MergeIcon, {}) }) }), jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.dismiss, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.dismiss, color: "info", onClick: handleDismiss, children: jsxRuntime.jsx(DismissIcon, {}) }) })] }), jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: !isEditInConflict ? localization.cancel : "Accept Remote", children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.cancel, onClick: handleCancel, children: jsxRuntime.jsx(CancelIcon, {}) }) }), !(isEditWithErrors || isEditInConflict) &&
                     jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.save, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.save, color: "info", onClick: handleSave, children: jsxRuntime.jsx(SaveIcon, {}) }) })] })) : (jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [isEditInConflict &&
@@ -2281,9 +2281,9 @@ const MRT_EditCellTextField = ({ cell, nValue, onValueChange, showLabel, table, 
     const { editingRow } = getState();
     const [value, setValue] = react.useState(() => nValue ? nValue : cell.getValue());
     react.useEffect(() => {
-        console.log("EditCellTextField use effect");
+        //console.log("EditCellTextField use effect");
         if (nValue && nValue !== value) {
-            console.log("EditCellTextField use effect set value: ", nValue);
+            //console.log("EditCellTextField use effect set value: ", nValue);
             setValue(nValue);
         }
     }, [nValue]);
@@ -2308,7 +2308,7 @@ const MRT_EditCellTextField = ({ cell, nValue, onValueChange, showLabel, table, 
     const handleChange = (event) => {
         var _a;
         (_a = textFieldProps.onChange) === null || _a === void 0 ? void 0 : _a.call(textFieldProps, event);
-        console.log("handleChange editTextField");
+        //console.log("handleChange editTextField");
         if (onValueChange) {
             onValueChange(cell.id, event.target.value);
         }
@@ -3025,7 +3025,7 @@ const MRT_EditRowModal = ({ open, row, table, }) => {
     const { options: { localization }, } = table;
     const [values, setValues] = react.useState(() => row._valuesCache ? row._valuesCache : row.original);
     const handleValueChange = (name, value) => {
-        console.log("handleValueChange editRowModal");
+        //console.log("handleValueChange editRowModal");
         setValues(prevValues => (Object.assign(Object.assign({}, prevValues), { [name]: value })));
     };
     return (jsxRuntime.jsxs(Dialog__default["default"], { open: open, children: [jsxRuntime.jsx(DialogTitle__default["default"], { textAlign: "center", children: localization.edit }), jsxRuntime.jsx(DialogContent__default["default"], { children: jsxRuntime.jsx("form", { onSubmit: (e) => e.preventDefault(), children: jsxRuntime.jsx(Stack__default["default"], { sx: {
