@@ -779,7 +779,6 @@ type MaterialReactTableProps<TData extends Record<string, any> = {}> = Prettify<
         values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
     }) => Promise<void> | void;
     onEditingRowMerge?: (props: {
-        exitEditingMode: () => void;
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
         values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
@@ -915,8 +914,9 @@ interface Props$g<TData extends Record<string, any> = {}> {
     row: MRT_Row<TData>;
     table: MRT_TableInstance<TData>;
     variant?: 'icon' | 'text';
+    onValueChange?: (name: string, value: string) => void;
 }
-declare const MRT_EditActionButtons: <TData extends Record<string, any> = {}>({ row, table, variant, }: Props$g<TData>) => react_jsx_runtime.JSX.Element;
+declare const MRT_EditActionButtons: <TData extends Record<string, any> = {}>({ row, table, variant, onValueChange, }: Props$g<TData>) => react_jsx_runtime.JSX.Element;
 
 interface Props$f<TData extends Record<string, any> = {}> {
     row: MRT_Row<TData>;

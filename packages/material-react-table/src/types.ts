@@ -901,7 +901,6 @@ export type MaterialReactTableProps<TData extends Record<string, any> = {}> =
         values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
       }) => Promise<void> | void;
       onEditingRowMerge?: (props: {
-        exitEditingMode: () => void;
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
         values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;

@@ -102,6 +102,33 @@ function __rest(s, e) {
   }
   return t;
 }
+function __awaiter(thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+}
 
 const MRT_AggregationFns = Object.assign({}, aggregationFns);
 
@@ -920,7 +947,7 @@ const MRT_RowActionMenu = ({ anchorEl, handleEdit, row, setAnchorEl, table, }) =
             })] }));
 };
 
-const MRT_EditActionButtons = ({ row, table, variant = 'icon', }) => {
+const MRT_EditActionButtons = ({ row, table, variant = 'icon', onValueChange, }) => {
     const { getState, options: { icons: { CancelIcon, SaveIcon, DismissIcon, MergeIcon }, localization, onEditingRowSave, onEditingRowCancel, onEditingRowMerge, onEditingRowDismiss, }, refs: { editInputRefs }, setEditingRow, setIsEditInConflict, } = table;
     const { editingRow } = getState();
     const { isEditInConflict } = getState();
@@ -951,24 +978,40 @@ const MRT_EditActionButtons = ({ row, table, variant = 'icon', }) => {
             values: (_b = editingRow === null || editingRow === void 0 ? void 0 : editingRow._valuesCache) !== null && _b !== void 0 ? _b : Object.assign({}, row.original),
         });
     };
-    const handleMerge = () => {
-        var _a, _b;
+    const handleMerge = () => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b, _c;
         //look for auto-filled input values
         (_a = Object.values(editInputRefs === null || editInputRefs === void 0 ? void 0 : editInputRefs.current)) === null || _a === void 0 ? void 0 : _a.forEach((input) => {
             if (input.value !== undefined &&
                 Object.hasOwn(editingRow === null || editingRow === void 0 ? void 0 : editingRow._valuesCache, input.name)) {
                 // @ts-ignore
+                console.log("Setting editingRow._valuesCache: ", input.name, " value: ", editingRow._valuesCache[input.name]);
+                // @ts-ignore
                 editingRow._valuesCache[input.name] = input.value;
             }
         });
-        onEditingRowMerge === null || onEditingRowMerge === void 0 ? void 0 : onEditingRowMerge({
-            exitEditingMode: () => setEditingRow(null),
+        console.log("beforeOnEditRowMerge");
+        yield (onEditingRowMerge === null || onEditingRowMerge === void 0 ? void 0 : onEditingRowMerge({
             row: editingRow !== null && editingRow !== void 0 ? editingRow : row,
             table,
             values: (_b = editingRow === null || editingRow === void 0 ? void 0 : editingRow._valuesCache) !== null && _b !== void 0 ? _b : Object.assign({}, row.original),
+        }));
+        console.log("afterOnEditRowMerge");
+        (_c = Object.values(editInputRefs === null || editInputRefs === void 0 ? void 0 : editInputRefs.current)) === null || _c === void 0 ? void 0 : _c.forEach((input) => {
+            var _a;
+            if (editingRow) {
+                // @ts-ignore
+                const n = input.name ? input.name : (_a = input.node) === null || _a === void 0 ? void 0 : _a.name;
+                // @ts-ignore
+                const v = editingRow._valuesCache[n];
+                if (onValueChange) {
+                    onValueChange(n, v);
+                    console.log("Setting input value: ", n, " value: ", v);
+                }
+            }
         });
-        setIsEditInConflict(false);
-    };
+        //setIsEditInConflict(false);
+    });
     console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`);
     return (jsx(Box, { onClick: (e) => e.stopPropagation(), sx: { display: 'flex', gap: '0.75rem' }, children: variant === 'icon' ? (jsxs(Fragment, { children: [isEditInConflict &&
                     jsxs(Fragment, { children: [jsx(Tooltip, { arrow: true, title: localization.merge, children: jsx(IconButton, { "aria-label": localization.merge, color: "info", onClick: handleMerge, children: jsx(MergeIcon, {}) }) }), jsx(Tooltip, { arrow: true, title: localization.dismiss, children: jsx(IconButton, { "aria-label": localization.dismiss, color: "info", onClick: handleDismiss, children: jsx(DismissIcon, {}) }) })] }), jsx(Tooltip, { arrow: true, title: !isEditInConflict ? localization.cancel : "Accept Remote", children: jsx(IconButton, { "aria-label": localization.cancel, onClick: handleCancel, children: jsx(CancelIcon, {}) }) }), !(isEditWithErrors || isEditInConflict) &&
@@ -2149,13 +2192,20 @@ const MRT_TableHead = ({ table, virtualColumns, virtualPaddingLeft, virtualPaddi
             : tableHeadProps === null || tableHeadProps === void 0 ? void 0 : tableHeadProps.sx))), children: getHeaderGroups().map((headerGroup) => (jsx(MRT_TableHeadRow, { headerGroup: headerGroup, table: table, virtualColumns: virtualColumns, virtualPaddingLeft: virtualPaddingLeft, virtualPaddingRight: virtualPaddingRight }, headerGroup.id))) })));
 };
 
-const MRT_EditCellTextField = ({ cell, showLabel, table, }) => {
+const MRT_EditCellTextField = ({ cell, nValue, onValueChange, showLabel, table, }) => {
     var _a, _b, _c;
     const { getState, options: { muiTableBodyCellEditTextFieldProps }, refs: { editInputRefs }, setEditingCell, setEditingRow, } = table;
     const { column, row } = cell;
     const { columnDef } = column;
     const { editingRow } = getState();
-    const [value, setValue] = useState(() => cell.getValue());
+    const [value, setValue] = useState(() => nValue ? nValue : cell.getValue());
+    useEffect(() => {
+        console.log("EditCellTextField use effect");
+        if (nValue && nValue !== value) {
+            console.log("EditCellTextField use effect set value: ", nValue);
+            setValue(nValue);
+        }
+    }, [nValue]);
     const mTableBodyCellEditTextFieldProps = muiTableBodyCellEditTextFieldProps instanceof Function
         ? muiTableBodyCellEditTextFieldProps({ cell, column, row, table })
         : muiTableBodyCellEditTextFieldProps;
@@ -2177,6 +2227,10 @@ const MRT_EditCellTextField = ({ cell, showLabel, table, }) => {
     const handleChange = (event) => {
         var _a;
         (_a = textFieldProps.onChange) === null || _a === void 0 ? void 0 : _a.call(textFieldProps, event);
+        console.log("handleChange editTextField");
+        if (onValueChange) {
+            onValueChange(cell.id, event.target.value);
+        }
         setValue(event.target.value);
         if (textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.select) {
             saveRow(event.target.value);
@@ -2888,6 +2942,11 @@ const MRT_TablePaper = ({ table }) => {
 
 const MRT_EditRowModal = ({ open, row, table, }) => {
     const { options: { localization }, } = table;
+    const [values, setValues] = useState(() => row._valuesCache ? row._valuesCache : row.original);
+    const handleValueChange = (name, value) => {
+        console.log("handleValueChange editRowModal");
+        setValues(prevValues => (Object.assign(Object.assign({}, prevValues), { [name]: value })));
+    };
     return (jsxs(Dialog, { open: open, children: [jsx(DialogTitle, { textAlign: "center", children: localization.edit }), jsx(DialogContent, { children: jsx("form", { onSubmit: (e) => e.preventDefault(), children: jsx(Stack, { sx: {
                             gap: '1.5rem',
                             minWidth: { xs: '300px', sm: '360px', md: '400px' },
@@ -2896,7 +2955,7 @@ const MRT_EditRowModal = ({ open, row, table, }) => {
                         }, children: row
                             .getAllCells()
                             .filter((cell) => cell.column.columnDef.columnDefType === 'data')
-                            .map((cell) => (jsx(MRT_EditCellTextField, { cell: cell, showLabel: true, table: table }, cell.id))) }) }) }), jsx(DialogActions, { sx: { p: '1.25rem' }, children: jsx(MRT_EditActionButtons, { row: row, table: table, variant: "text" }) })] }));
+                            .map((cell) => (jsx(MRT_EditCellTextField, { cell: cell, showLabel: true, table: table, nValue: values[cell.column.id], onValueChange: handleValueChange }, cell.id))) }) }) }), jsx(DialogActions, { sx: { p: '1.25rem' }, children: jsx(MRT_EditActionButtons, { row: row, table: table, variant: "text", onValueChange: handleValueChange }) })] }));
 };
 
 const MRT_TableRoot = (props) => {

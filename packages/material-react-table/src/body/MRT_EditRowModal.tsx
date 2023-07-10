@@ -6,7 +6,8 @@ import Stack from '@mui/material/Stack';
 import { MRT_EditActionButtons } from '../buttons/MRT_EditActionButtons';
 import { MRT_EditCellTextField } from '../inputs/MRT_EditCellTextField';
 import { type MRT_Row, type MRT_TableInstance } from '../types';
-
+import { useState
+ } from 'react';
 interface Props<TData extends Record<string, any> = {}> {
   open: boolean;
   row: MRT_Row<TData>;
@@ -21,7 +22,15 @@ export const MRT_EditRowModal = <TData extends Record<string, any> = {}>({
   const {
     options: { localization },
   } = table;
+  const [values, setValues] = useState<Record<string, string>>(() => row._valuesCache?row._valuesCache:row.original);
 
+  const handleValueChange = (name:string, value:string) => {
+    //console.log("handleValueChange editRowModal");
+    setValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
   return (
     <Dialog open={open}>
       <DialogTitle textAlign="center">{localization.edit}</DialogTitle>
@@ -44,13 +53,15 @@ export const MRT_EditRowModal = <TData extends Record<string, any> = {}>({
                   key={cell.id}
                   showLabel
                   table={table as any}
+                  nValue={values[cell.column.id]}
+                  onValueChange={handleValueChange}
                 />
               ))}
           </Stack>
         </form>
       </DialogContent>
       <DialogActions sx={{ p: '1.25rem' }}>
-        <MRT_EditActionButtons row={row} table={table} variant="text" />
+        <MRT_EditActionButtons row={row} table={table} variant="text" onValueChange={handleValueChange}/>
       </DialogActions>
     </Dialog>
   );
