@@ -8,12 +8,14 @@ interface Props<TData extends Record<string, any> = {}> {
   row: MRT_Row<TData>;
   table: MRT_TableInstance<TData>;
   variant?: 'icon' | 'text';
+  onValueChange?: (name: string, value: string) => void;
 }
 
 export const MRT_EditActionButtons = <TData extends Record<string, any> = {}>({
   row,
   table,
   variant = 'icon',
+  onValueChange,
 }: Props<TData>) => {
   const {
     getState,
@@ -61,7 +63,7 @@ export const MRT_EditActionButtons = <TData extends Record<string, any> = {}>({
     });
   };
 
-  const handleMerge = () => {
+  const handleMerge = async () => {
     //look for auto-filled input values
     Object.values(editInputRefs?.current)?.forEach((input) => {
       if (
@@ -69,18 +71,35 @@ export const MRT_EditActionButtons = <TData extends Record<string, any> = {}>({
         Object.hasOwn(editingRow?._valuesCache as object, input.name)
       ) {
         // @ts-ignore
+        //console.log("Setting editingRow._valuesCache: ", input.name, " value: ", editingRow._valuesCache[input.name]);
+        // @ts-ignore
         editingRow._valuesCache[input.name] = input.value;
       }
     });
-    onEditingRowMerge?.({
-      exitEditingMode: () => setEditingRow(null),
+    //console.log("beforeOnEditRowMerge");
+    await onEditingRowMerge?.({
       row: editingRow ?? row,
       table,
       values: editingRow?._valuesCache ?? { ...row.original },
+    }) ;
+    //console.log("afterOnEditRowMerge");
+    Object.values(editInputRefs?.current)?.forEach((input) => {
+      if(editingRow) {
+        // @ts-ignore
+        const n= input.name? input.name:input.node?.name;
+        // @ts-ignore
+        const v = editingRow._valuesCache[n];
+        if(onValueChange){
+        onValueChange(n, v);
+        //console.log("Setting input value: ", n, " value: ", v);
+        }
+        
+        
+      }
     });
-    setIsEditInConflict(false);
+    //setIsEditInConflict(false);
   };
-console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`)
+  //console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`)
   return (
     <Box
       onClick={(e) => e.stopPropagation()}

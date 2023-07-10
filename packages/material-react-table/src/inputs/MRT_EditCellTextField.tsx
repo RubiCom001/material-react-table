@@ -3,6 +3,7 @@ import {
   type FocusEvent,
   type KeyboardEvent,
   useState,
+  useEffect,
 } from 'react';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,10 +14,14 @@ interface Props<TData extends Record<string, any> = {}> {
   cell: MRT_Cell<TData>;
   table: MRT_TableInstance<TData>;
   showLabel?: boolean;
+  nValue?:string;
+  onValueChange?: (id: string, value: string) => void;
 }
 
 export const MRT_EditCellTextField = <TData extends Record<string, any> = {}>({
   cell,
+  nValue, 
+  onValueChange,
   showLabel,
   table,
 }: Props<TData>) => {
@@ -31,8 +36,14 @@ export const MRT_EditCellTextField = <TData extends Record<string, any> = {}>({
   const { columnDef } = column;
   const { editingRow } = getState();
 
-  const [value, setValue] = useState(() => cell.getValue<string>());
-
+  const [value, setValue] = useState(() => nValue?nValue:cell.getValue<string>());
+  useEffect(() => {
+    //console.log("EditCellTextField use effect");
+    if(nValue && nValue!== value) {
+      //console.log("EditCellTextField use effect set value: ", nValue);
+      setValue(nValue);
+    }
+  }, [nValue]);
   const mTableBodyCellEditTextFieldProps =
     muiTableBodyCellEditTextFieldProps instanceof Function
       ? muiTableBodyCellEditTextFieldProps({ cell, column, row, table })
@@ -66,6 +77,10 @@ export const MRT_EditCellTextField = <TData extends Record<string, any> = {}>({
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     textFieldProps.onChange?.(event);
+    //console.log("handleChange editTextField");
+    if(onValueChange){
+    onValueChange(cell.id, event.target.value);
+    }
     setValue(event.target.value);
     if (textFieldProps?.select) {
       saveRow(event.target.value);
