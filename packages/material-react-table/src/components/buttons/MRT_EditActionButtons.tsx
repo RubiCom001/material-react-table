@@ -26,19 +26,23 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
   const {
     getState,
     options: {
-      icons: { CancelIcon, SaveIcon },
+      icons: { CancelIcon, SaveIcon, DismissIcon, MergeIcon },
       localization,
       onCreatingRowCancel,
       onCreatingRowSave,
       onEditingRowCancel,
       onEditingRowSave,
+      onEditingRowMerge,
+      onEditingRowDismiss,
     },
     refs: { editInputRefs },
     setCreatingRow,
     setEditingRow,
+    setIsEditInConflict,
   } = table;
   const { creatingRow, editingRow, isSaving } = getState();
-
+  const { isEditInConflict } = getState();
+  const { isEditWithErrors } = getState();
   const isCreating = creatingRow?.id === row.id;
   const isEditing = editingRow?.id === row.id;
 
@@ -52,6 +56,33 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
     }
     row._valuesCache = {} as any; //reset values cache
   };
+
+  const handleDismiss = () => {
+    onEditingRowDismiss?.({ row, table });
+    setIsEditInConflict(false);
+    //setEditingRow(null);
+  };
+
+  const handleMerge = () => {
+    //look for auto-filled input values
+    Object.values(editInputRefs?.current)?.forEach((input) => {
+      if (
+        input.value !== undefined &&
+        Object.hasOwn(editingRow?._valuesCache as object, input.name)
+      ) {
+        // @ts-ignore
+        editingRow._valuesCache[input.name] = input.value;
+      }
+    });
+    onEditingRowMerge?.({
+      exitEditingMode: () => setEditingRow(null),
+      row: editingRow ?? row,
+      table,
+      values: editingRow?._valuesCache ?? { ...row.original },
+    });
+    setIsEditInConflict(false);
+  };
+//console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`);
 
   const handleSubmitRow = () => {
     //look for auto-filled input values
@@ -94,13 +125,35 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
     >
       {variant === 'icon' ? (
         <>
-          <Tooltip title={localization.cancel}>
+        { isEditInConflict &&
+          <>
+        <Tooltip arrow title={localization.merge}>
+            <IconButton
+              aria-label={localization.merge}
+              color="info"
+              onClick={handleMerge}
+            >
+              <MergeIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip arrow title={localization.dismiss}>
+            <IconButton
+              aria-label={localization.dismiss}
+              color="info"
+              onClick={handleDismiss}
+            >
+              <DismissIcon />
+            </IconButton>
+          </Tooltip>
+          </>
+        }
+          <Tooltip title={!isEditInConflict? localization.cancel:"Accept Remote"}>
             <IconButton aria-label={localization.cancel} onClick={handleCancel}>
               <CancelIcon />
             </IconButton>
           </Tooltip>
           {((isCreating && onCreatingRowSave) ||
-            (isEditing && onEditingRowSave)) && (
+            (isEditing && onEditingRowSave)) && !(isEditWithErrors || isEditInConflict) && (
             <Tooltip title={localization.save}>
               <IconButton
                 aria-label={localization.save}
@@ -111,6 +164,7 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
                 {isSaving ? <CircularProgress size={18} /> : <SaveIcon />}
               </IconButton>
             </Tooltip>
+          
           )}
         </>
       ) : (
