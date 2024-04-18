@@ -4,6 +4,8 @@ export const MRT_Localization_ZH_HANT: MRT_Localization = {
   actions: '動作',
   and: '與',
   cancel: '取消',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: '更改過濾模式',
   changeSearchMode: '更改搜尋模式',
   clearFilter: '清除過濾',

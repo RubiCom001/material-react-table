@@ -4,6 +4,8 @@ export const MRT_Localization_VI: MRT_Localization = {
   actions: 'Thao tác',
   and: 'và',
   cancel: 'Huỷ bỏ',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'Thay đổi chế độ lọc',
   changeSearchMode: 'Thay đổi chế độ tìm kiếm',
   clearFilter: 'Xoá bộ lọc',

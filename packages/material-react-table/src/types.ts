@@ -165,6 +165,8 @@ export interface MRT_Localization {
   actions: string;
   and: string;
   cancel: string;
+  merge: string;
+  dismiss: string;
   changeFilterMode: string;
   changeSearchMode: string;
   clearFilter: string;
@@ -341,6 +343,8 @@ export type MRT_TableInstance<TData extends MRT_RowData> = Omit<
   setHoveredColumn: Dispatch<SetStateAction<Partial<MRT_Column<TData>> | null>>;
   setHoveredRow: Dispatch<SetStateAction<Partial<MRT_Row<TData>> | null>>;
   setIsFullScreen: Dispatch<SetStateAction<boolean>>;
+      setIsEditInConflict: Dispatch<SetStateAction<boolean>>;
+      setIsEditWithErrors: Dispatch<SetStateAction<boolean>>;
   setShowAlertBanner: Dispatch<SetStateAction<boolean>>;
   setShowColumnFilters: Dispatch<SetStateAction<boolean>>;
   setShowGlobalFilter: Dispatch<SetStateAction<boolean>>;
@@ -395,6 +399,8 @@ export interface MRT_TableState<TData extends MRT_RowData> extends TableState {
   hoveredColumn: Partial<MRT_Column<TData>> | null;
   hoveredRow: Partial<MRT_Row<TData>> | null;
   isFullScreen: boolean;
+    isEditInConflict: boolean;
+    isEditWithErrors: boolean;
   isLoading: boolean;
   isSaving: boolean;
   showAlertBanner: boolean;
@@ -1165,6 +1171,10 @@ export type MRT_TableOptions<TData extends MRT_RowData> = Omit<
     row: MRT_Row<TData>;
     table: MRT_TableInstance<TData>;
   }) => void;
+      onEditingRowDismiss?: (props: {
+        row: MRT_Row<TData>;
+        table: MRT_TableInstance<TData>;
+      }) => void;
   onEditingRowChange?: OnChangeFn<MRT_Row<TData> | null>;
   onEditingRowSave?: (props: {
     exitEditingMode: () => void;
@@ -1172,10 +1182,17 @@ export type MRT_TableOptions<TData extends MRT_RowData> = Omit<
     table: MRT_TableInstance<TData>;
     values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
   }) => Promise<void> | void;
+      onEditingRowMerge?: (props: {
+        row: MRT_Row<TData>;
+        table: MRT_TableInstance<TData>;
+        values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
+      }) => Promise<void> | void;
   onGlobalFilterFnChange?: OnChangeFn<MRT_FilterOption>;
   onHoveredColumnChange?: OnChangeFn<Partial<MRT_Column<TData>> | null>;
   onHoveredRowChange?: OnChangeFn<Partial<MRT_Row<TData>> | null>;
   onIsFullScreenChange?: OnChangeFn<boolean>;
+      onIsEditInConflict?: OnChangeFn<boolean>;
+      onIsEditWithErrors?: OnChangeFn<boolean>;
   onShowAlertBannerChange?: OnChangeFn<boolean>;
   onShowColumnFiltersChange?: OnChangeFn<boolean>;
   onShowGlobalFilterChange?: OnChangeFn<boolean>;

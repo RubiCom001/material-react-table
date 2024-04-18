@@ -32,6 +32,8 @@ import SortIcon from '@mui/icons-material/Sort';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import DismissIcon from '@mui/icons-material/RemoveRoad';
+import MergeIcon from '@mui/icons-material/AddRoad';
 
 export const MRT_Default_Icons = {
   ArrowDownwardIcon,
@@ -68,6 +70,8 @@ export const MRT_Default_Icons = {
   SyncAltIcon,
   ViewColumnIcon,
   VisibilityOffIcon,
+  DismissIcon,
+  MergeIcon,
 } as const;
 
 export type MRT_Icons = Record<keyof typeof MRT_Default_Icons, any>;

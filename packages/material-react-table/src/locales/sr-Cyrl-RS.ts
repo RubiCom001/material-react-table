@@ -4,6 +4,8 @@ export const MRT_Localization_SR_CYRL_RS: MRT_Localization = {
   actions: 'Акције',
   and: 'и',
   cancel: 'Откажи',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'Промени режим филтрирања',
   changeSearchMode: 'Промени режим претраге',
   clearFilter: 'Поништи филтер',

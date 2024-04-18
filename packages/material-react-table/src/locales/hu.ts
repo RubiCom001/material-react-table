@@ -4,6 +4,8 @@ export const MRT_Localization_HU: MRT_Localization = {
   actions: 'Műveletek',
   and: 'és',
   cancel: 'Mégse',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'Szűrő módjának megváltoztatása',
   changeSearchMode: 'Keresés módjának megváltoztatása',
   clearFilter: 'Szűrő törlése',

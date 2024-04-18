@@ -4,6 +4,8 @@ export const MRT_Localization_DA: MRT_Localization = {
   actions: 'Handlinger',
   and: 'og',
   cancel: 'Annuller',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'Skift filtertilstand',
   changeSearchMode: 'Skift søgetilstand',
   clearFilter: 'Ryd filter',

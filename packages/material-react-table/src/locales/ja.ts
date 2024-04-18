@@ -4,6 +4,8 @@ export const MRT_Localization_JA: MRT_Localization = {
   actions: '操作',
   and: 'と',
   cancel: 'キャンセル',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: '検索モードを変更',
   changeSearchMode: '検索モードを変更',
   clearFilter: 'リセット',
