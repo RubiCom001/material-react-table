@@ -75,7 +75,8 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
       }
     });
     onEditingRowMerge?.({
-      exitEditingMode: () => setEditingRow(null),
+      exitEditingMode: () => {},
+      //exitEditingMode: () => setEditingRow(null),
       row: editingRow ?? row,
       table,
       values: editingRow?._valuesCache ?? { ...row.original },
@@ -147,6 +148,10 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
           </Tooltip>
           </>
         }
+
+
+
+
           <Tooltip title={!isEditInConflict? localization.cancel:"Accept Remote"}>
             <IconButton aria-label={localization.cancel} onClick={handleCancel}>
               <CancelIcon />
@@ -169,9 +174,30 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
         </>
       ) : (
         <>
-          <Button onClick={handleCancel} sx={{ minWidth: '100px' }}>
-            {localization.cancel}
+
+
+
+        { isEditInConflict &&
+        <>
+          <Button onClick={handleMerge} 
+              variant="contained"
+              sx={{ minWidth: '100px' }}>
+              {localization.merge}
           </Button>
+          <Button
+              //disabled={isSaving}
+              onClick={handleDismiss}
+              sx={{ minWidth: '100px' }}
+              variant="contained"
+            >
+            {localization.dismiss}
+          </Button>
+        </>
+        }
+          <Button onClick={handleCancel} sx={{ minWidth: '100px' }}>
+            {!isEditInConflict? localization.cancel:"Accept Remote"}
+          </Button>
+          { !(isEditWithErrors || isEditInConflict) &&
           <Button
             disabled={isSaving}
             onClick={handleSubmitRow}
@@ -181,6 +207,7 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
             {isSaving && <CircularProgress color="inherit" size={18} />}
             {localization.save}
           </Button>
+          }
         </>
       )}
     </Box>

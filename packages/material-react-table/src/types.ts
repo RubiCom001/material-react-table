@@ -343,8 +343,8 @@ export type MRT_TableInstance<TData extends MRT_RowData> = Omit<
   setHoveredColumn: Dispatch<SetStateAction<Partial<MRT_Column<TData>> | null>>;
   setHoveredRow: Dispatch<SetStateAction<Partial<MRT_Row<TData>> | null>>;
   setIsFullScreen: Dispatch<SetStateAction<boolean>>;
-      setIsEditInConflict: Dispatch<SetStateAction<boolean>>;
-      setIsEditWithErrors: Dispatch<SetStateAction<boolean>>;
+  setIsEditInConflict: Dispatch<SetStateAction<boolean>>;
+  setIsEditWithErrors: Dispatch<SetStateAction<boolean>>;
   setShowAlertBanner: Dispatch<SetStateAction<boolean>>;
   setShowColumnFilters: Dispatch<SetStateAction<boolean>>;
   setShowGlobalFilter: Dispatch<SetStateAction<boolean>>;
@@ -1171,7 +1171,7 @@ export type MRT_TableOptions<TData extends MRT_RowData> = Omit<
     row: MRT_Row<TData>;
     table: MRT_TableInstance<TData>;
   }) => void;
-      onEditingRowDismiss?: (props: {
+  onEditingRowDismiss?: (props: {
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
       }) => void;
@@ -1182,7 +1182,7 @@ export type MRT_TableOptions<TData extends MRT_RowData> = Omit<
     table: MRT_TableInstance<TData>;
     values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
   }) => Promise<void> | void;
-      onEditingRowMerge?: (props: {
+  onEditingRowMerge?: (props: {
         exitEditingMode: () => void;
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;

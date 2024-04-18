@@ -142,6 +142,12 @@ export const useMRT_TableInstance = <TData extends MRT_RowData>(
   const [isFullScreen, setIsFullScreen] = useState<boolean>(
     initialState?.isFullScreen ?? false,
   );
+  const [isEditInConflict, setIsEditInConflict] = useState<boolean>(
+    initialState?.isEditInConflict ?? false,
+  );
+  const [isEditWithErrors, setIsEditWithErrors] = useState<boolean>(
+    initialState?.isEditWithErrors ?? false,
+  );
   const [pagination, onPaginationChange] = useState<MRT_PaginationState>(
     initialState?.pagination ?? { pageIndex: 0, pageSize: 10 },
   );
@@ -174,6 +180,8 @@ export const useMRT_TableInstance = <TData extends MRT_RowData>(
     hoveredColumn,
     hoveredRow,
     isFullScreen,
+    isEditWithErrors,
+    isEditInConflict,
     pagination,
     showAlertBanner,
     showColumnFilters,
@@ -302,6 +310,10 @@ export const useMRT_TableInstance = <TData extends MRT_RowData>(
     statefulTableOptions.onHoveredRowChange ?? setHoveredRow;
   table.setIsFullScreen =
     statefulTableOptions.onIsFullScreenChange ?? setIsFullScreen;
+  table.setIsEditInConflict =
+    statefulTableOptions.onIsEditInConflict ?? setIsEditInConflict;
+  table.setIsEditWithErrors =
+    statefulTableOptions.onIsEditWithErrors ?? setIsEditWithErrors;
   table.setShowAlertBanner =
     statefulTableOptions.onShowAlertBannerChange ?? setShowAlertBanner;
   table.setShowColumnFilters =
