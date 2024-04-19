@@ -4,6 +4,8 @@ export const MRT_Localization_HE: MRT_Localization = {
   actions: 'פעולות',
   and: 'ו',
   cancel: 'ביטול',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'שינוי מצב סינון',
   changeSearchMode: 'שינוי מצב חיפוש',
   clearFilter: 'נקה סינון',

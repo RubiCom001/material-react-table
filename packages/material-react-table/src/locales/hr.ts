@@ -4,6 +4,8 @@ export const MRT_Localization_HR: MRT_Localization = {
   actions: 'Radnje',
   and: 'i',
   cancel: 'Odustani',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'Promijeni način filtriranja',
   changeSearchMode: 'Promijeni način pretraživanja',
   clearFilter: 'Očisti filtriranje',

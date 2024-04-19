@@ -4,6 +4,8 @@ export const MRT_Localization_HY: MRT_Localization = {
   actions: 'Գործողություններ',
   and: 'և',
   cancel: 'Չեղարկել',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'Փոխել զտիչի ռեժիմը',
   changeSearchMode: 'Փոխել որոնման ռեժիմը',
   clearFilter: 'Մաքրել զտիչը',

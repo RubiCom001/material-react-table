@@ -75,8 +75,6 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
       }
     });
     onEditingRowMerge?.({
-      exitEditingMode: () => {},
-      //exitEditingMode: () => setEditingRow(null),
       row: editingRow ?? row,
       table,
       values: editingRow?._valuesCache ?? { ...row.original },

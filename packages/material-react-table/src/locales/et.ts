@@ -4,6 +4,8 @@ export const MRT_Localization_ET: MRT_Localization = {
   actions: 'Toimingud',
   and: 'ja',
   cancel: 'Tühista',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'Muuda filtri režiimi',
   changeSearchMode: 'Muuda otsingu režiimi',
   clearFilter: 'Tühista filter',

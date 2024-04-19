@@ -1183,7 +1183,6 @@ export type MRT_TableOptions<TData extends MRT_RowData> = Omit<
     values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
   }) => Promise<void> | void;
   onEditingRowMerge?: (props: {
-        exitEditingMode: () => void;
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
         values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;

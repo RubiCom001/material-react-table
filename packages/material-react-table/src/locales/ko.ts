@@ -4,6 +4,8 @@ export const MRT_Localization_KO: MRT_Localization = {
   actions: '동작',
   and: '~',
   cancel: '취소',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: '필터 모드 변경',
   changeSearchMode: '검색 모드 변경',
   clearFilter: '필터 초기화',

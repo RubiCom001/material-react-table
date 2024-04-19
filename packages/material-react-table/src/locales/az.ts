@@ -4,6 +4,8 @@ export const MRT_Localization_AZ: MRT_Localization = {
   actions: 'Əməliyyatlar',
   and: 'və',
   cancel: 'Ləğv Et',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'Filter Rejimini Dəyiş',
   changeSearchMode: 'Axtarış Rejimini Dəyiş',
   clearFilter: 'Filteri təmizlə',

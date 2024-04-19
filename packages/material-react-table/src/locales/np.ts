@@ -4,6 +4,8 @@ export const MRT_Localization_NP: MRT_Localization = {
   actions: 'कार्यहरू',
   and: 'तथा',
   cancel: 'रद्द गर्नुहोस्',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'फिल्टर प्रणाली परिवर्तन गर्नुहोस्',
   changeSearchMode: 'खोज प्रणाली परिवर्तन गर्नुहोस्',
   clearFilter: 'फिल्टर हटाउनुहोस्',
