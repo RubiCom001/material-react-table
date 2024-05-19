@@ -577,7 +577,7 @@ type MRT_ColumnDef<TData extends MRT_RowData, TValue = unknown> = Omit<ColumnDef
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
     }) => DropdownOption[]) | DropdownOption[];
-    editVariant?: 'select' | 'text';
+    editVariant?: 'select' | 'text' | 'datePicker';
     enableClickToCopy?: 'context-menu' | ((cell: MRT_Cell<TData>) => 'context-menu' | boolean) | boolean;
     enableColumnActions?: boolean;
     enableColumnDragging?: boolean;
@@ -630,6 +630,13 @@ type MRT_ColumnDef<TData extends MRT_RowData, TValue = unknown> = Omit<ColumnDef
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
     }) => TextFieldProps) | TextFieldProps;
+    muiEditDatePickerProps?: ((props: {
+        cell: MRT_Cell<TData, TValue>;
+        column: MRT_Column<TData>;
+        row: MRT_Row<TData>;
+        rangeFilterIndex?: number;
+        table: MRT_TableInstance<TData>;
+    }) => DatePickerProps<never>) | DatePickerProps<never>;
     muiFilterAutocompleteProps?: ((props: {
         column: MRT_Column<TData>;
         table: MRT_TableInstance<TData>;
@@ -642,12 +649,12 @@ type MRT_ColumnDef<TData extends MRT_RowData, TValue = unknown> = Omit<ColumnDef
         column: MRT_Column<TData>;
         rangeFilterIndex?: number;
         table: MRT_TableInstance<TData>;
-    }) => DatePickerProps<any>) | DatePickerProps<any>;
+    }) => DatePickerProps<never>) | DatePickerProps<never>;
     muiFilterDateTimePickerProps?: ((props: {
         column: MRT_Column<TData>;
         rangeFilterIndex?: number;
         table: MRT_TableInstance<TData>;
-    }) => DateTimePickerProps<any>) | DateTimePickerProps<any>;
+    }) => DateTimePickerProps<never>) | DateTimePickerProps<never>;
     muiFilterSliderProps?: ((props: {
         column: MRT_Column<TData>;
         table: MRT_TableInstance<TData>;
@@ -661,7 +668,7 @@ type MRT_ColumnDef<TData extends MRT_RowData, TValue = unknown> = Omit<ColumnDef
         column: MRT_Column<TData>;
         rangeFilterIndex?: number;
         table: MRT_TableInstance<TData>;
-    }) => TimePickerProps<any>) | TimePickerProps<any>;
+    }) => TimePickerProps<never>) | TimePickerProps<never>;
     muiTableBodyCellProps?: ((props: {
         cell: MRT_Cell<TData, TValue>;
         column: MRT_Column<TData>;
@@ -894,6 +901,13 @@ type MRT_TableOptions<TData extends MRT_RowData> = Omit<Partial<TableOptions<TDa
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
     }) => TextFieldProps) | TextFieldProps;
+    muiEditDatePickerProps?: ((props: {
+        cell: MRT_Cell<TData>;
+        column: MRT_Column<TData>;
+        rangeFilterIndex?: number;
+        row: MRT_Row<TData>;
+        table: MRT_TableInstance<TData>;
+    }) => DatePickerProps<never>) | DatePickerProps<never>;
     muiExpandAllButtonProps?: ((props: {
         table: MRT_TableInstance<TData>;
     }) => IconButtonProps) | IconButtonProps;
@@ -914,12 +928,12 @@ type MRT_TableOptions<TData extends MRT_RowData> = Omit<Partial<TableOptions<TDa
         column: MRT_Column<TData>;
         rangeFilterIndex?: number;
         table: MRT_TableInstance<TData>;
-    }) => DatePickerProps<any>) | DatePickerProps<any>;
+    }) => DatePickerProps<never>) | DatePickerProps<never>;
     muiFilterDateTimePickerProps?: ((props: {
         column: MRT_Column<TData>;
         rangeFilterIndex?: number;
         table: MRT_TableInstance<TData>;
-    }) => DateTimePickerProps<any>) | DateTimePickerProps<any>;
+    }) => DateTimePickerProps<never>) | DateTimePickerProps<never>;
     muiFilterSliderProps?: ((props: {
         column: MRT_Column<TData>;
         table: MRT_TableInstance<TData>;
@@ -933,7 +947,7 @@ type MRT_TableOptions<TData extends MRT_RowData> = Omit<Partial<TableOptions<TDa
         column: MRT_Column<TData>;
         rangeFilterIndex?: number;
         table: MRT_TableInstance<TData>;
-    }) => TimePickerProps<any>) | TimePickerProps<any>;
+    }) => TimePickerProps<never>) | TimePickerProps<never>;
     muiLinearProgressProps?: ((props: {
         isTopToolbar: boolean;
         table: MRT_TableInstance<TData>;
@@ -1246,7 +1260,7 @@ declare function defaultDisplayColumnProps<TData extends MRT_RowData>({ header, 
     readonly enableSorting?: boolean | undefined;
     readonly invertSorting?: boolean | undefined;
     readonly sortDescFirst?: boolean | undefined;
-    readonly sortUndefined?: false | 1 | -1 | undefined;
+    readonly sortUndefined?: false | 1 | -1 | "first" | "last" | undefined;
     readonly enableGrouping?: boolean | undefined;
     readonly enableResizing?: boolean | undefined;
     readonly maxSize?: number | undefined;
@@ -1310,7 +1324,7 @@ declare function defaultDisplayColumnProps<TData extends MRT_RowData>({ header, 
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
     }) => DropdownOption[]) | undefined;
-    readonly editVariant?: "text" | "select" | undefined;
+    readonly editVariant?: "text" | "select" | "datePicker" | undefined;
     readonly enableClickToCopy?: boolean | "context-menu" | ((cell: MRT_Cell<TData, unknown>) => boolean | "context-menu") | undefined;
     readonly enableColumnActions?: boolean | undefined;
     readonly enableColumnDragging?: boolean | undefined;
@@ -1341,6 +1355,13 @@ declare function defaultDisplayColumnProps<TData extends MRT_RowData>({ header, 
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
     }) => _mui_material.TextFieldProps) | undefined;
+    readonly muiEditDatePickerProps?: _mui_x_date_pickers.DatePickerProps<never, false> | ((props: {
+        cell: MRT_Cell<TData, unknown>;
+        column: MRT_Column<TData, unknown>;
+        row: MRT_Row<TData>;
+        rangeFilterIndex?: number | undefined;
+        table: MRT_TableInstance<TData>;
+    }) => _mui_x_date_pickers.DatePickerProps<never, false>) | undefined;
     readonly muiFilterAutocompleteProps?: _mui_material.AutocompleteProps<any, any, any, any, "div"> | ((props: {
         column: MRT_Column<TData, unknown>;
         table: MRT_TableInstance<TData>;
@@ -1349,16 +1370,16 @@ declare function defaultDisplayColumnProps<TData extends MRT_RowData>({ header, 
         column: MRT_Column<TData, unknown>;
         table: MRT_TableInstance<TData>;
     }) => _mui_material.CheckboxProps) | undefined;
-    readonly muiFilterDatePickerProps?: _mui_x_date_pickers.DatePickerProps<any, false> | ((props: {
+    readonly muiFilterDatePickerProps?: _mui_x_date_pickers.DatePickerProps<never, false> | ((props: {
         column: MRT_Column<TData, unknown>;
         rangeFilterIndex?: number | undefined;
         table: MRT_TableInstance<TData>;
-    }) => _mui_x_date_pickers.DatePickerProps<any, false>) | undefined;
-    readonly muiFilterDateTimePickerProps?: _mui_x_date_pickers.DateTimePickerProps<any, false> | ((props: {
+    }) => _mui_x_date_pickers.DatePickerProps<never, false>) | undefined;
+    readonly muiFilterDateTimePickerProps?: _mui_x_date_pickers.DateTimePickerProps<never, false> | ((props: {
         column: MRT_Column<TData, unknown>;
         rangeFilterIndex?: number | undefined;
         table: MRT_TableInstance<TData>;
-    }) => _mui_x_date_pickers.DateTimePickerProps<any, false>) | undefined;
+    }) => _mui_x_date_pickers.DateTimePickerProps<never, false>) | undefined;
     readonly muiFilterSliderProps?: _mui_material.SliderProps | ((props: {
         column: MRT_Column<TData, unknown>;
         table: MRT_TableInstance<TData>;
@@ -1368,11 +1389,11 @@ declare function defaultDisplayColumnProps<TData extends MRT_RowData>({ header, 
         rangeFilterIndex?: number | undefined;
         table: MRT_TableInstance<TData>;
     }) => _mui_material.TextFieldProps) | undefined;
-    readonly muiFilterTimePickerProps?: _mui_x_date_pickers.TimePickerProps<any, false> | ((props: {
+    readonly muiFilterTimePickerProps?: _mui_x_date_pickers.TimePickerProps<never, false> | ((props: {
         column: MRT_Column<TData, unknown>;
         rangeFilterIndex?: number | undefined;
         table: MRT_TableInstance<TData>;
-    }) => _mui_x_date_pickers.TimePickerProps<any, false>) | undefined;
+    }) => _mui_x_date_pickers.TimePickerProps<never, false>) | undefined;
     readonly muiTableBodyCellProps?: _mui_material.TableCellProps | ((props: {
         cell: MRT_Cell<TData, unknown>;
         column: MRT_Column<TData, unknown>;
@@ -1431,7 +1452,7 @@ declare const getIsRowSelected: <TData extends MRT_RowData>({ row, table, }: {
 }) => boolean | undefined;
 declare const getMRT_RowSelectionHandler: <TData extends MRT_RowData>({ row, staticRowIndex, table, }: {
     row: MRT_Row<TData>;
-    staticRowIndex?: number | undefined;
+    staticRowIndex?: number;
     table: MRT_TableInstance<TData>;
 }) => (event: ChangeEvent<HTMLInputElement> | MouseEvent<HTMLTableRowElement>, value?: boolean) => void;
 declare const getMRT_SelectAllHandler: <TData extends MRT_RowData>({ table }: {
@@ -1706,9 +1727,10 @@ declare const MRT_TableHeadRow: <TData extends MRT_RowData>({ columnVirtualizer,
 
 interface MRT_EditCellTextFieldProps<TData extends MRT_RowData> extends TextFieldProps<'standard'> {
     cell: MRT_Cell<TData>;
+    rangeFilterIndex?: number;
     table: MRT_TableInstance<TData>;
 }
-declare const MRT_EditCellTextField: <TData extends MRT_RowData>({ cell, table, ...rest }: MRT_EditCellTextFieldProps<TData>) => react_jsx_runtime.JSX.Element;
+declare const MRT_EditCellTextField: <TData extends MRT_RowData>({ cell, rangeFilterIndex, table, ...rest }: MRT_EditCellTextFieldProps<TData>) => react_jsx_runtime.JSX.Element;
 
 interface MRT_FilterCheckboxProps<TData extends MRT_RowData> extends CheckboxProps {
     column: MRT_Column<TData>;

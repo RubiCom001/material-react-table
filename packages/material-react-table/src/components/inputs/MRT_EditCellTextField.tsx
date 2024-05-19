@@ -13,21 +13,25 @@ import {
   type MRT_TableInstance,
 } from '../../types';
 import { getValueAndLabel, parseFromValuesOrFunc } from '../../utils/utils';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+//import { DatePicker, DatePickerProps } from '@mui/x-date-pickers';
 
 export interface MRT_EditCellTextFieldProps<TData extends MRT_RowData>
   extends TextFieldProps<'standard'> {
   cell: MRT_Cell<TData>;
+  rangeFilterIndex?: number;
   table: MRT_TableInstance<TData>;
 }
 
 export const MRT_EditCellTextField = <TData extends MRT_RowData>({
   cell,
+  rangeFilterIndex,
   table,
   ...rest
 }: MRT_EditCellTextFieldProps<TData>) => {
         const {
               getState,
-              options: { createDisplayMode, editDisplayMode, muiEditTextFieldProps },
+              options: { createDisplayMode, editDisplayMode, muiEditTextFieldProps, muiEditDatePickerProps, },
               refs: { editInputRefs },
               setCreatingRow,
               setEditingCell,
@@ -41,7 +45,8 @@ export const MRT_EditCellTextField = <TData extends MRT_RowData>({
         const isCreating = creatingRow?.id === row.id;
         const isEditing = editingRow?.id === row.id;
 
-        const [value, setValue] = useState(() => cell.getValue<string>());
+        //const [value, setValue] = useState(() => cell.getValue<any>());
+        const [value, setValue] = useState(() => cell.getValue()??'');
 
         const textFieldProps: TextFieldProps = {
           ...parseFromValuesOrFunc(muiEditTextFieldProps, {
@@ -65,10 +70,19 @@ export const MRT_EditCellTextField = <TData extends MRT_RowData>({
           row,
           table,
         });
+        
+        const args = { cell, column, rangeFilterIndex, row, table };
 
+        const datePickerProps = {
+          ...parseFromValuesOrFunc(muiEditDatePickerProps, args),
+          ...parseFromValuesOrFunc(columnDef.muiEditDatePickerProps, args),
+        } as any;
+
+        
         const isSelectEdit = editVariant === 'select' || textFieldProps?.select;
+        const isDatePicker = editVariant === 'datePicker';
 
-        const saveInputValueToRowCache = (newValue: string) => {
+        const saveInputValueToRowCache = (newValue: any) => {
           //@ts-ignore
           row._valuesCache[column.id] = newValue;
           if (isCreating) {
@@ -85,6 +99,13 @@ export const MRT_EditCellTextField = <TData extends MRT_RowData>({
             saveInputValueToRowCache(event.target.value);
           }
         };
+
+        const handleDateChange = (newValue:any, context:any) => {
+          if (context.validationError == null && newValue !== value) {
+            setValue(newValue);
+            //saveInputValueToRowCache(newValue.valueOf().toString());
+          }
+        }
 
         const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
           textFieldProps.onBlur?.(event);
@@ -103,7 +124,143 @@ export const MRT_EditCellTextField = <TData extends MRT_RowData>({
           return <>{columnDef.Edit?.({ cell, column, row, table })}</>;
         }
 
+        const commonDatePickerProps = {
+          onChange:handleDateChange,
+          value:value ?? null,
+          //value: value || null,
+        };
+
+        const commonTextFieldProps: TextFieldProps = {
+          FormHelperTextProps: {
+            sx: {
+              fontSize: '0.75rem',
+              lineHeight: '0.8rem',
+              whiteSpace: 'nowrap',
+            },
+          },
+          /*InputProps: endAdornment //hack because mui looks for presence of endAdornment key instead of undefined
+            ? { endAdornment, startAdornment }
+            : { startAdornment },*/
+          fullWidth: true,
+          /*helperText: showChangeModeButton ? (
+            <label>
+              {localization.filterMode.replace(
+                '{filterType}',
+                // @ts-ignore
+                localization[
+                  `filter${
+                    currentFilterOption?.charAt(0)?.toUpperCase() +
+                    currentFilterOption?.slice(1)
+                  }`
+                ],
+              )}
+            </label>
+          ) : null,*/
+          inputProps: {
+            //'aria-label': filterPlaceholder,
+            //autoComplete: 'new-password', // disable autocomplete and autofill
+            //disabled: !!filterChipLabel,
+            /*sx: {
+              textOverflow: 'ellipsis',
+              width: filterChipLabel ? 0 : undefined,
+            },*/
+            //title: filterPlaceholder,
+            name: columnDef.accessorKey,
+            title: columnDef.header,
+
+          },
+          /*inputRef: (inputRef) => {
+            filterInputRefs.current[`${column.id}-${rangeFilterIndex ?? 0}`] =
+              inputRef;
+            if (textFieldProps.inputRef) {
+              textFieldProps.inputRef = inputRef;
+            }
+          },*/
+          margin: 'none',
+          /*placeholder:
+            filterChipLabel || isSelectFilter || isMultiSelectFilter
+              ? undefined
+              : filterPlaceholder,*/
+          variant: 'standard',
+          ...textFieldProps,
+          sx: (theme) => ({
+              minWidth: '160px',
+            /*minWidth: isDateFilter
+              ? '160px'
+              : enableColumnFilterModes && rangeFilterIndex === 0
+                ? '110px'
+                : isRangeFilter
+                  ? '100px'
+                  : !filterChipLabel
+                    ? '120px'
+                    : 'auto',*/
+            mx: '-2px',
+            p: 0,
+            width: 'calc(100% + 4px)',
+            ...(parseFromValuesOrFunc(textFieldProps?.sx, theme) as any),
+          }),
+        };
+
+        const handleClear = () => {
+          /*if (isMultiSelectFilter) {
+            setFilterValue([]);
+            column.setFilterValue([]);
+          } else if (isRangeFilter) {
+            setFilterValue('');
+            column.setFilterValue((old: [string | undefined, string | undefined]) => {
+              const newFilterValues = (Array.isArray(old) && old) || ['', ''];
+              newFilterValues[rangeFilterIndex as number] = undefined;
+              return newFilterValues;
+            });
+          } else {*/
+            setValue('');
+            //column.setFilterValue(undefined);
+          //}
+        };
+        /*const textFieldPropsFinal:MRT_EditCellTextFieldProps<TData> = {...textFieldProps, 
+          onBlur:handleBlur,
+          disabled: columnDef.enableEditing?!columnDef.enableEditing:false,
+          label: columnDef.header,
+          //key: col.accessorKey,
+          name: columnDef.accessorKey,
+          size: "small"
+          //size: 'small' as TextFieldPropsSizeOverrides,
+        } as MRT_EditCellTextFieldProps<TData>;*/
+
+        const handleAccept = (event: any) => {
+          //textFieldProps.onBlur?.(event);
+          saveInputValueToRowCache(event.valueOf());
+          //console.log("DatePicker handleAccept(event), value: ", value, " event: ", event);
+          //setEditingCell(null);
+        };
+
         return (
+          isDatePicker ? (
+            <DatePicker
+            key={columnDef.accessorKey}
+            displayWeekNumber={true}
+            showDaysOutsideCurrentMonth={true}
+            openTo='year'
+            views={['year', 'month', 'day']}
+            //onChange={handleDateChange}
+            onAccept = {handleAccept}
+            yearsPerRow={3}
+              {...commonDatePickerProps}
+              {...datePickerProps}
+              //slotProps={{ textField: textFieldPropsFinal }}
+              slotProps={{
+                field: {
+                  clearable: true,
+                  onClear: () => handleClear(),
+                  ...datePickerProps?.slotProps?.field,
+                },
+                textField: {
+                  ...commonTextFieldProps,
+                  ...datePickerProps?.slotProps?.textField,
+                },
+              }}
+            />
+          ) :
           <TextField
             disabled={parseFromValuesOrFunc(columnDef.enableEditing, row) === false}
             fullWidth

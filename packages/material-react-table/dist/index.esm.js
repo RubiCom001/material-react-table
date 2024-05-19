@@ -52,6 +52,7 @@ import DismissIcon from '@mui/icons-material/RemoveRoad';
 import MergeIcon from '@mui/icons-material/AddRoad';
 import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual';
 import Paper from '@mui/material/Paper';
+import { useTheme as useTheme$1 } from '@mui/material';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -61,6 +62,7 @@ import Skeleton from '@mui/material/Skeleton';
 import TableCell from '@mui/material/TableCell';
 import highlightWords from 'highlight-words';
 import TextField from '@mui/material/TextField';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Collapse from '@mui/material/Collapse';
 import TableFooter from '@mui/material/TableFooter';
 import TableHead from '@mui/material/TableHead';
@@ -69,7 +71,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import InputAdornment from '@mui/material/InputAdornment';
 import { debounce } from '@mui/material/utils';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -1899,16 +1900,17 @@ const MRT_CopyButton = (_a) => {
 };
 
 const MRT_EditCellTextField = (_a) => {
-    var _b, _c;
-    var { cell, table } = _a, rest = __rest(_a, ["cell", "table"]);
-    const { getState, options: { createDisplayMode, editDisplayMode, muiEditTextFieldProps }, refs: { editInputRefs }, setCreatingRow, setEditingCell, setEditingRow, } = table;
+    var _b, _c, _d, _e;
+    var { cell, rangeFilterIndex, table } = _a, rest = __rest(_a, ["cell", "rangeFilterIndex", "table"]);
+    const { getState, options: { createDisplayMode, editDisplayMode, muiEditTextFieldProps, muiEditDatePickerProps, }, refs: { editInputRefs }, setCreatingRow, setEditingCell, setEditingRow, } = table;
     const { column, row } = cell;
     const { columnDef } = column;
     const { creatingRow, editingRow } = getState();
     const { editSelectOptions, editVariant } = columnDef;
     const isCreating = (creatingRow === null || creatingRow === void 0 ? void 0 : creatingRow.id) === row.id;
     const isEditing = (editingRow === null || editingRow === void 0 ? void 0 : editingRow.id) === row.id;
-    const [value, setValue] = useState(() => cell.getValue());
+    //const [value, setValue] = useState(() => cell.getValue<any>());
+    const [value, setValue] = useState(() => { var _a; return (_a = cell.getValue()) !== null && _a !== void 0 ? _a : ''; });
     const textFieldProps = Object.assign(Object.assign(Object.assign({}, parseFromValuesOrFunc(muiEditTextFieldProps, {
         cell,
         column,
@@ -1926,7 +1928,10 @@ const MRT_EditCellTextField = (_a) => {
         row,
         table,
     });
+    const args = { cell, column, rangeFilterIndex, row, table };
+    const datePickerProps = Object.assign(Object.assign({}, parseFromValuesOrFunc(muiEditDatePickerProps, args)), parseFromValuesOrFunc(columnDef.muiEditDatePickerProps, args));
     const isSelectEdit = editVariant === 'select' || (textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.select);
+    const isDatePicker = editVariant === 'datePicker';
     const saveInputValueToRowCache = (newValue) => {
         //@ts-ignore
         row._valuesCache[column.id] = newValue;
@@ -1945,6 +1950,12 @@ const MRT_EditCellTextField = (_a) => {
             saveInputValueToRowCache(event.target.value);
         }
     };
+    const handleDateChange = (newValue, context) => {
+        if (context.validationError == null && newValue !== value) {
+            setValue(newValue);
+            //saveInputValueToRowCache(newValue.valueOf().toString());
+        }
+    };
     const handleBlur = (event) => {
         var _a;
         (_a = textFieldProps.onBlur) === null || _a === void 0 ? void 0 : _a.call(textFieldProps, event);
@@ -1961,37 +1972,141 @@ const MRT_EditCellTextField = (_a) => {
     if (columnDef.Edit) {
         return jsx(Fragment, { children: (_b = columnDef.Edit) === null || _b === void 0 ? void 0 : _b.call(columnDef, { cell, column, row, table }) });
     }
-    return (jsx(TextField, Object.assign({ disabled: parseFromValuesOrFunc(columnDef.enableEditing, row) === false, fullWidth: true, inputRef: (inputRef) => {
-            if (inputRef) {
-                editInputRefs.current[column.id] = inputRef;
-                if (textFieldProps.inputRef) {
-                    textFieldProps.inputRef = inputRef;
+    const commonDatePickerProps = {
+        onChange: handleDateChange,
+        value: value !== null && value !== void 0 ? value : null,
+        //value: value || null,
+    };
+    const commonTextFieldProps = Object.assign(Object.assign({ FormHelperTextProps: {
+            sx: {
+                fontSize: '0.75rem',
+                lineHeight: '0.8rem',
+                whiteSpace: 'nowrap',
+            },
+        }, 
+        /*InputProps: endAdornment //hack because mui looks for presence of endAdornment key instead of undefined
+          ? { endAdornment, startAdornment }
+          : { startAdornment },*/
+        fullWidth: true, 
+        /*helperText: showChangeModeButton ? (
+          <label>
+            {localization.filterMode.replace(
+              '{filterType}',
+              // @ts-ignore
+              localization[
+                `filter${
+                  currentFilterOption?.charAt(0)?.toUpperCase() +
+                  currentFilterOption?.slice(1)
+                }`
+              ],
+            )}
+          </label>
+        ) : null,*/
+        inputProps: {
+            //'aria-label': filterPlaceholder,
+            //autoComplete: 'new-password', // disable autocomplete and autofill
+            //disabled: !!filterChipLabel,
+            /*sx: {
+              textOverflow: 'ellipsis',
+              width: filterChipLabel ? 0 : undefined,
+            },*/
+            //title: filterPlaceholder,
+            name: columnDef.accessorKey,
+            title: columnDef.header,
+        }, 
+        /*inputRef: (inputRef) => {
+          filterInputRefs.current[`${column.id}-${rangeFilterIndex ?? 0}`] =
+            inputRef;
+          if (textFieldProps.inputRef) {
+            textFieldProps.inputRef = inputRef;
+          }
+        },*/
+        margin: 'none', 
+        /*placeholder:
+          filterChipLabel || isSelectFilter || isMultiSelectFilter
+            ? undefined
+            : filterPlaceholder,*/
+        variant: 'standard' }, textFieldProps), { sx: (theme) => (Object.assign({ minWidth: '160px', 
+            /*minWidth: isDateFilter
+              ? '160px'
+              : enableColumnFilterModes && rangeFilterIndex === 0
+                ? '110px'
+                : isRangeFilter
+                  ? '100px'
+                  : !filterChipLabel
+                    ? '120px'
+                    : 'auto',*/
+            mx: '-2px', p: 0, width: 'calc(100% + 4px)' }, parseFromValuesOrFunc(textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.sx, theme))) });
+    const handleClear = () => {
+        /*if (isMultiSelectFilter) {
+          setFilterValue([]);
+          column.setFilterValue([]);
+        } else if (isRangeFilter) {
+          setFilterValue('');
+          column.setFilterValue((old: [string | undefined, string | undefined]) => {
+            const newFilterValues = (Array.isArray(old) && old) || ['', ''];
+            newFilterValues[rangeFilterIndex as number] = undefined;
+            return newFilterValues;
+          });
+        } else {*/
+        setValue('');
+        //column.setFilterValue(undefined);
+        //}
+    };
+    /*const textFieldPropsFinal:MRT_EditCellTextFieldProps<TData> = {...textFieldProps,
+      onBlur:handleBlur,
+      disabled: columnDef.enableEditing?!columnDef.enableEditing:false,
+      label: columnDef.header,
+      //key: col.accessorKey,
+      name: columnDef.accessorKey,
+      size: "small"
+      //size: 'small' as TextFieldPropsSizeOverrides,
+    } as MRT_EditCellTextFieldProps<TData>;*/
+    const handleAccept = (event) => {
+        //textFieldProps.onBlur?.(event);
+        saveInputValueToRowCache(event.valueOf());
+        //console.log("DatePicker handleAccept(event), value: ", value, " event: ", event);
+        //setEditingCell(null);
+    };
+    return (isDatePicker ? (jsx(DatePicker, Object.assign({ displayWeekNumber: true, showDaysOutsideCurrentMonth: true, openTo: 'year', views: ['year', 'month', 'day'], 
+        //onChange={handleDateChange}
+        onAccept: handleAccept, yearsPerRow: 3 }, commonDatePickerProps, datePickerProps, { 
+        //slotProps={{ textField: textFieldPropsFinal }}
+        slotProps: {
+            field: Object.assign({ clearable: true, onClear: () => handleClear() }, (_c = datePickerProps === null || datePickerProps === void 0 ? void 0 : datePickerProps.slotProps) === null || _c === void 0 ? void 0 : _c.field),
+            textField: Object.assign(Object.assign({}, commonTextFieldProps), (_d = datePickerProps === null || datePickerProps === void 0 ? void 0 : datePickerProps.slotProps) === null || _d === void 0 ? void 0 : _d.textField),
+        } }), columnDef.accessorKey)) :
+        jsx(TextField, Object.assign({ disabled: parseFromValuesOrFunc(columnDef.enableEditing, row) === false, fullWidth: true, inputRef: (inputRef) => {
+                if (inputRef) {
+                    editInputRefs.current[column.id] = inputRef;
+                    if (textFieldProps.inputRef) {
+                        textFieldProps.inputRef = inputRef;
+                    }
                 }
-            }
-        }, label: ['custom', 'modal'].includes((isCreating ? createDisplayMode : editDisplayMode))
-            ? columnDef.header
-            : undefined, margin: "none", name: column.id, placeholder: !['custom', 'modal'].includes((isCreating ? createDisplayMode : editDisplayMode))
-            ? columnDef.header
-            : undefined, select: isSelectEdit, size: "small", value: value !== null && value !== void 0 ? value : '', variant: "standard" }, textFieldProps, { InputProps: Object.assign(Object.assign(Object.assign({}, (textFieldProps.variant !== 'outlined'
-            ? { disableUnderline: editDisplayMode === 'table' }
-            : {})), textFieldProps.InputProps), { sx: (theme) => {
+            }, label: ['custom', 'modal'].includes((isCreating ? createDisplayMode : editDisplayMode))
+                ? columnDef.header
+                : undefined, margin: "none", name: column.id, placeholder: !['custom', 'modal'].includes((isCreating ? createDisplayMode : editDisplayMode))
+                ? columnDef.header
+                : undefined, select: isSelectEdit, size: "small", value: value !== null && value !== void 0 ? value : '', variant: "standard" }, textFieldProps, { InputProps: Object.assign(Object.assign(Object.assign({}, (textFieldProps.variant !== 'outlined'
+                ? { disableUnderline: editDisplayMode === 'table' }
+                : {})), textFieldProps.InputProps), { sx: (theme) => {
+                    var _a;
+                    return (Object.assign({ mb: 0 }, parseFromValuesOrFunc((_a = textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.InputProps) === null || _a === void 0 ? void 0 : _a.sx, theme)));
+                } }), SelectProps: {
+                MenuProps: { disableScrollLock: true },
+            }, inputProps: Object.assign({ autoComplete: 'new-password' }, textFieldProps.inputProps), onBlur: handleBlur, onChange: handleChange, onClick: (e) => {
                 var _a;
-                return (Object.assign({ mb: 0 }, parseFromValuesOrFunc((_a = textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.InputProps) === null || _a === void 0 ? void 0 : _a.sx, theme)));
-            } }), SelectProps: {
-            MenuProps: { disableScrollLock: true },
-        }, inputProps: Object.assign({ autoComplete: 'new-password' }, textFieldProps.inputProps), onBlur: handleBlur, onChange: handleChange, onClick: (e) => {
-            var _a;
-            e.stopPropagation();
-            (_a = textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.onClick) === null || _a === void 0 ? void 0 : _a.call(textFieldProps, e);
-        }, onKeyDown: handleEnterKeyDown, children: (_c = textFieldProps.children) !== null && _c !== void 0 ? _c : selectOptions === null || selectOptions === void 0 ? void 0 : selectOptions.map((option) => {
-            const { label, value } = getValueAndLabel(option);
-            return (jsx(MenuItem, { sx: {
-                    alignItems: 'center',
-                    display: 'flex',
-                    gap: '0.5rem',
-                    m: 0,
-                }, value: value, children: label }, value));
-        }) })));
+                e.stopPropagation();
+                (_a = textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.onClick) === null || _a === void 0 ? void 0 : _a.call(textFieldProps, e);
+            }, onKeyDown: handleEnterKeyDown, children: (_e = textFieldProps.children) !== null && _e !== void 0 ? _e : selectOptions === null || selectOptions === void 0 ? void 0 : selectOptions.map((option) => {
+                const { label, value } = getValueAndLabel(option);
+                return (jsx(MenuItem, { sx: {
+                        alignItems: 'center',
+                        display: 'flex',
+                        gap: '0.5rem',
+                        m: 0,
+                    }, value: value, children: label }, value));
+            }) })));
 };
 
 const MRT_TableBodyCell = (_a) => {
@@ -4142,6 +4257,7 @@ const MRT_TablePaper = (_a) => {
     const { getState, options: { enableBottomToolbar, enableTopToolbar, mrtTheme: { baseBackgroundColor }, muiTablePaperProps, renderBottomToolbar, renderTopToolbar, }, refs: { tablePaperRef }, } = table;
     const { isFullScreen } = getState();
     const paperProps = Object.assign(Object.assign({}, parseFromValuesOrFunc(muiTablePaperProps, { table })), rest);
+    const theme = useTheme$1();
     return (jsxs(Paper, Object.assign({ elevation: 2 }, paperProps, { ref: (ref) => {
             tablePaperRef.current = ref;
             if (paperProps === null || paperProps === void 0 ? void 0 : paperProps.ref) {
@@ -4161,7 +4277,7 @@ const MRT_TablePaper = (_a) => {
                 right: 0,
                 top: 0,
                 width: '100dvw',
-                zIndex: 999,
+                zIndex: theme.zIndex.modal,
             }
             : {})), paperProps === null || paperProps === void 0 ? void 0 : paperProps.style), sx: (theme) => (Object.assign({ backgroundColor: baseBackgroundColor, backgroundImage: 'unset', overflow: 'hidden', transition: 'all 100ms ease-in-out' }, parseFromValuesOrFunc(paperProps === null || paperProps === void 0 ? void 0 : paperProps.sx, theme))), children: [enableTopToolbar &&
                 ((_b = parseFromValuesOrFunc(renderTopToolbar, { table })) !== null && _b !== void 0 ? _b : (jsx(MRT_TopToolbar, { table: table }))), jsx(MRT_TableContainer, { table: table }), enableBottomToolbar &&

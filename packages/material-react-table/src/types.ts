@@ -517,7 +517,7 @@ export type MRT_ColumnDef<TData extends MRT_RowData, TValue = unknown> = Omit<
         table: MRT_TableInstance<TData>;
       }) => DropdownOption[])
     | DropdownOption[];
-  editVariant?: 'select' | 'text';
+  editVariant?: 'select' | 'text' | 'datePicker';
   enableClickToCopy?:
     | 'context-menu'
     | ((cell: MRT_Cell<TData>) => 'context-menu' | boolean)
@@ -594,6 +594,15 @@ export type MRT_ColumnDef<TData extends MRT_RowData, TValue = unknown> = Omit<
         table: MRT_TableInstance<TData>;
       }) => TextFieldProps)
     | TextFieldProps;
+  muiEditDatePickerProps?:
+    | ((props: {
+        cell: MRT_Cell<TData, TValue>;
+        column: MRT_Column<TData>;
+        row: MRT_Row<TData>;
+        rangeFilterIndex?: number;
+        table: MRT_TableInstance<TData>;
+      }) => DatePickerProps<never>)
+    | DatePickerProps<never>;
   muiFilterAutocompleteProps?:
     | ((props: {
         column: MRT_Column<TData>;
@@ -977,6 +986,15 @@ export type MRT_TableOptions<TData extends MRT_RowData> = Omit<
         table: MRT_TableInstance<TData>;
       }) => TextFieldProps)
     | TextFieldProps;
+  muiEditDatePickerProps?:
+    | ((props: {
+        cell: MRT_Cell<TData>;
+        column: MRT_Column<TData>;
+        rangeFilterIndex?: number;
+        row: MRT_Row<TData>;
+        table: MRT_TableInstance<TData>;
+      }) => DatePickerProps<never>)
+    | DatePickerProps<never>;
   muiExpandAllButtonProps?:
     | ((props: { table: MRT_TableInstance<TData> }) => IconButtonProps)
     | IconButtonProps;

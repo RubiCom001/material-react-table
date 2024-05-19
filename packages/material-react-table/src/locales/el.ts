@@ -4,6 +4,8 @@ export const MRT_Localization_EL: MRT_Localization = {
   actions: 'Ενέργειες',
   and: 'και',
   cancel: 'Ακύρωση',
+  merge: 'Merge (Remote Wins)',
+  dismiss: 'Dismiss Remote',
   changeFilterMode: 'Αλλαγή λειτουργίας φίλτρου',
   changeSearchMode: 'Αλλαγή λειτουργίας αναζήτησης',
   clearFilter: 'Καθαρισμός φίλτρου',
