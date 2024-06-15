@@ -708,7 +708,7 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
 };
 
 const MRT_EditActionButtons = (_a) => {
-    var { row, table, variant = 'icon' } = _a, rest = __rest(_a, ["row", "table", "variant"]);
+    var { row, table, variant = 'icon', btnColors = ['primary', 'secondary'] } = _a, rest = __rest(_a, ["row", "table", "variant", "btnColors"]);
     const { getState, options: { icons: { CancelIcon, SaveIcon, DismissIcon, MergeIcon }, localization, onCreatingRowCancel, onCreatingRowSave, onEditingRowCancel, onEditingRowSave, onEditingRowMerge, onEditingRowDismiss, }, refs: { editInputRefs }, setCreatingRow, setEditingRow, setIsEditInConflict, } = table;
     const { creatingRow, editingRow, isSaving } = getState();
     const { isEditInConflict } = getState();
@@ -776,15 +776,13 @@ const MRT_EditActionButtons = (_a) => {
             });
         }
     };
-    return (jsxRuntime.jsx(Box__default["default"], { onClick: (e) => e.stopPropagation(), sx: (theme) => (Object.assign({ display: 'flex', gap: '0.75rem' }, parseFromValuesOrFunc(rest === null || rest === void 0 ? void 0 : rest.sx, theme))), children: variant === 'icon' ? (jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [isEditInConflict &&
-                    jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.merge, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.merge, color: "info", onClick: handleMerge, children: jsxRuntime.jsx(MergeIcon, {}) }) }), jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.dismiss, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.dismiss, color: "info", onClick: handleDismiss, children: jsxRuntime.jsx(DismissIcon, {}) }) })] }), jsxRuntime.jsx(Tooltip__default["default"], { title: !isEditInConflict ? localization.cancel : "Accept Remote", children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.cancel, onClick: handleCancel, children: jsxRuntime.jsx(CancelIcon, {}) }) }), ((isCreating && onCreatingRowSave) ||
-                    (isEditing && onEditingRowSave)) && !(isEditWithErrors || isEditInConflict) && (jsxRuntime.jsx(Tooltip__default["default"], { title: localization.save, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.save, color: "info", disabled: isSaving, onClick: handleSubmitRow, children: isSaving ? jsxRuntime.jsx(CircularProgress__default["default"], { size: 18 }) : jsxRuntime.jsx(SaveIcon, {}) }) }))] })) : (jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [isEditInConflict &&
-                    jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [jsxRuntime.jsx(Button__default["default"], { onClick: handleMerge, variant: "contained", sx: { minWidth: '100px' }, children: localization.merge }), jsxRuntime.jsx(Button__default["default"]
+    return (jsxRuntime.jsx(Box__default["default"], { onClick: (e) => e.stopPropagation(), sx: (theme) => (Object.assign({ display: 'flex', gap: '0.75rem' }, parseFromValuesOrFunc(rest === null || rest === void 0 ? void 0 : rest.sx, theme))), children: variant === 'icon' ? (jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [isEditInConflict && (jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.merge, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.merge, color: "info", onClick: handleMerge, children: jsxRuntime.jsx(MergeIcon, {}) }) }), jsxRuntime.jsx(Tooltip__default["default"], { arrow: true, title: localization.dismiss, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.dismiss, color: "info", onClick: handleDismiss, children: jsxRuntime.jsx(DismissIcon, {}) }) })] })), jsxRuntime.jsx(Tooltip__default["default"], { title: !isEditInConflict ? localization.cancel : 'Accept Remote', children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.cancel, onClick: handleCancel, children: jsxRuntime.jsx(CancelIcon, {}) }) }), ((isCreating && onCreatingRowSave) ||
+                    (isEditing && onEditingRowSave)) &&
+                    !(isEditWithErrors || isEditInConflict) && (jsxRuntime.jsx(Tooltip__default["default"], { title: localization.save, children: jsxRuntime.jsx(IconButton__default["default"], { "aria-label": localization.save, color: "info", disabled: isSaving, onClick: handleSubmitRow, children: isSaving ? jsxRuntime.jsx(CircularProgress__default["default"], { size: 18 }) : jsxRuntime.jsx(SaveIcon, {}) }) }))] })) : (jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [isEditInConflict && (jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [jsxRuntime.jsx(Button__default["default"], { onClick: handleMerge, color: btnColors[0], variant: "contained", sx: { minWidth: '100px' }, children: localization.merge }), jsxRuntime.jsx(Button__default["default"]
+                        //disabled={isSaving}
+                        , { 
                             //disabled={isSaving}
-                            , { 
-                                //disabled={isSaving}
-                                onClick: handleDismiss, sx: { minWidth: '100px' }, variant: "contained", children: localization.dismiss })] }), jsxRuntime.jsx(Button__default["default"], { onClick: handleCancel, sx: { minWidth: '100px' }, children: !isEditInConflict ? localization.cancel : "Accept Remote" }), !(isEditWithErrors || isEditInConflict) &&
-                    jsxRuntime.jsxs(Button__default["default"], { disabled: isSaving, onClick: handleSubmitRow, sx: { minWidth: '100px' }, variant: "contained", children: [isSaving && jsxRuntime.jsx(CircularProgress__default["default"], { color: "inherit", size: 18 }), localization.save] })] })) }));
+                            onClick: handleDismiss, sx: { minWidth: '100px' }, variant: "contained", color: btnColors[0], children: localization.dismiss })] })), jsxRuntime.jsx(Button__default["default"], { onClick: handleCancel, color: btnColors[0], sx: { minWidth: '100px' }, variant: "contained", children: !isEditInConflict ? localization.cancel : 'Accept Remote' }), !(isEditWithErrors || isEditInConflict) && (jsxRuntime.jsxs(Button__default["default"], { disabled: isSaving, onClick: handleSubmitRow, sx: { minWidth: '100px' }, variant: "contained", color: btnColors[1], children: [isSaving && jsxRuntime.jsx(CircularProgress__default["default"], { color: "inherit", size: 18 }), localization.save] }))] })) }));
 };
 
 const parseCSSVarId = (id) => id.replace(/[^a-zA-Z0-9]/g, '_');
@@ -2043,7 +2041,9 @@ const MRT_EditCellTextField = (_a) => {
         }
     };
     const handleDateChange = (newValue, context) => {
+        var _a;
         if (context.validationError == null && newValue !== value) {
+            (_a = datePickerProps.onChange) === null || _a === void 0 ? void 0 : _a.call(datePickerProps, newValue, context);
             setValue(newValue);
             //saveInputValueToRowCache(newValue.valueOf().toString());
         }
@@ -2077,128 +2077,129 @@ const MRT_EditCellTextField = (_a) => {
             },
         }, 
         /*InputProps: endAdornment //hack because mui looks for presence of endAdornment key instead of undefined
-          ? { endAdornment, startAdornment }
-          : { startAdornment },*/
+                ? { endAdornment, startAdornment }
+                : { startAdornment },*/
         fullWidth: true, 
         /*helperText: showChangeModeButton ? (
-          <label>
-            {localization.filterMode.replace(
-              '{filterType}',
-              // @ts-ignore
-              localization[
-                `filter${
-                  currentFilterOption?.charAt(0)?.toUpperCase() +
-                  currentFilterOption?.slice(1)
-                }`
-              ],
-            )}
-          </label>
-        ) : null,*/
+                <label>
+                  {localization.filterMode.replace(
+                    '{filterType}',
+                    // @ts-ignore
+                    localization[
+                      `filter${
+                        currentFilterOption?.charAt(0)?.toUpperCase() +
+                        currentFilterOption?.slice(1)
+                      }`
+                    ],
+                  )}
+                </label>
+              ) : null,*/
         inputProps: {
             //'aria-label': filterPlaceholder,
             //autoComplete: 'new-password', // disable autocomplete and autofill
             //disabled: !!filterChipLabel,
             /*sx: {
-              textOverflow: 'ellipsis',
-              width: filterChipLabel ? 0 : undefined,
-            },*/
+                    textOverflow: 'ellipsis',
+                    width: filterChipLabel ? 0 : undefined,
+                  },*/
             //title: filterPlaceholder,
             name: columnDef.accessorKey,
             title: columnDef.header,
         }, 
         /*inputRef: (inputRef) => {
-          filterInputRefs.current[`${column.id}-${rangeFilterIndex ?? 0}`] =
-            inputRef;
-          if (textFieldProps.inputRef) {
-            textFieldProps.inputRef = inputRef;
-          }
-        },*/
+                filterInputRefs.current[`${column.id}-${rangeFilterIndex ?? 0}`] =
+                  inputRef;
+                if (textFieldProps.inputRef) {
+                  textFieldProps.inputRef = inputRef;
+                }
+              },*/
         margin: 'none', 
         /*placeholder:
-          filterChipLabel || isSelectFilter || isMultiSelectFilter
-            ? undefined
-            : filterPlaceholder,*/
+                filterChipLabel || isSelectFilter || isMultiSelectFilter
+                  ? undefined
+                  : filterPlaceholder,*/
         variant: 'standard' }, textFieldProps), { sx: (theme) => (Object.assign({ minWidth: '160px', 
             /*minWidth: isDateFilter
-              ? '160px'
-              : enableColumnFilterModes && rangeFilterIndex === 0
-                ? '110px'
-                : isRangeFilter
-                  ? '100px'
-                  : !filterChipLabel
-                    ? '120px'
-                    : 'auto',*/
+                    ? '160px'
+                    : enableColumnFilterModes && rangeFilterIndex === 0
+                      ? '110px'
+                      : isRangeFilter
+                        ? '100px'
+                        : !filterChipLabel
+                          ? '120px'
+                          : 'auto',*/
             mx: '-2px', p: 0, width: 'calc(100% + 4px)' }, parseFromValuesOrFunc(textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.sx, theme))) });
     const handleClear = () => {
         /*if (isMultiSelectFilter) {
-          setFilterValue([]);
-          column.setFilterValue([]);
-        } else if (isRangeFilter) {
-          setFilterValue('');
-          column.setFilterValue((old: [string | undefined, string | undefined]) => {
-            const newFilterValues = (Array.isArray(old) && old) || ['', ''];
-            newFilterValues[rangeFilterIndex as number] = undefined;
-            return newFilterValues;
-          });
-        } else {*/
+                setFilterValue([]);
+                column.setFilterValue([]);
+              } else if (isRangeFilter) {
+                setFilterValue('');
+                column.setFilterValue((old: [string | undefined, string | undefined]) => {
+                  const newFilterValues = (Array.isArray(old) && old) || ['', ''];
+                  newFilterValues[rangeFilterIndex as number] = undefined;
+                  return newFilterValues;
+                });
+              } else {*/
         setValue('');
         //column.setFilterValue(undefined);
         //}
     };
     /*const textFieldPropsFinal:MRT_EditCellTextFieldProps<TData> = {...textFieldProps,
-      onBlur:handleBlur,
-      disabled: columnDef.enableEditing?!columnDef.enableEditing:false,
-      label: columnDef.header,
-      //key: col.accessorKey,
-      name: columnDef.accessorKey,
-      size: "small"
-      //size: 'small' as TextFieldPropsSizeOverrides,
-    } as MRT_EditCellTextFieldProps<TData>;*/
+            onBlur:handleBlur,
+            disabled: columnDef.enableEditing?!columnDef.enableEditing:false,
+            label: columnDef.header,
+            //key: col.accessorKey,
+            name: columnDef.accessorKey,
+            size: "small"
+            //size: 'small' as TextFieldPropsSizeOverrides,
+          } as MRT_EditCellTextFieldProps<TData>;*/
     const handleAccept = (event) => {
+        var _a;
         //textFieldProps.onBlur?.(event);
-        saveInputValueToRowCache(event.valueOf());
+        (_a = datePickerProps.onAccept) === null || _a === void 0 ? void 0 : _a.call(datePickerProps, event);
+        saveInputValueToRowCache(event);
         //console.log("DatePicker handleAccept(event), value: ", value, " event: ", event);
         //setEditingCell(null);
     };
-    return (isDatePicker ? (jsxRuntime.jsx(DatePicker.DatePicker, Object.assign({ displayWeekNumber: true, showDaysOutsideCurrentMonth: true, openTo: 'year', views: ['year', 'month', 'day'], 
+    return isDatePicker ? (jsxRuntime.jsx(DatePicker.DatePicker, Object.assign({ displayWeekNumber: true, showDaysOutsideCurrentMonth: true, openTo: "year", views: ['year', 'month', 'day'], 
         //onChange={handleDateChange}
         onAccept: handleAccept, yearsPerRow: 3 }, commonDatePickerProps, datePickerProps, { 
         //slotProps={{ textField: textFieldPropsFinal }}
         slotProps: {
             field: Object.assign({ clearable: true, onClear: () => handleClear() }, (_c = datePickerProps === null || datePickerProps === void 0 ? void 0 : datePickerProps.slotProps) === null || _c === void 0 ? void 0 : _c.field),
             textField: Object.assign(Object.assign({}, commonTextFieldProps), (_d = datePickerProps === null || datePickerProps === void 0 ? void 0 : datePickerProps.slotProps) === null || _d === void 0 ? void 0 : _d.textField),
-        } }), columnDef.accessorKey)) :
-        jsxRuntime.jsx(TextField__default["default"], Object.assign({ disabled: parseFromValuesOrFunc(columnDef.enableEditing, row) === false, fullWidth: true, inputRef: (inputRef) => {
-                if (inputRef) {
-                    editInputRefs.current[column.id] = inputRef;
-                    if (textFieldProps.inputRef) {
-                        textFieldProps.inputRef = inputRef;
-                    }
+        } }), columnDef.accessorKey)) : (jsxRuntime.jsx(TextField__default["default"], Object.assign({ disabled: parseFromValuesOrFunc(columnDef.enableEditing, row) === false, fullWidth: true, inputRef: (inputRef) => {
+            if (inputRef) {
+                editInputRefs.current[column.id] = inputRef;
+                if (textFieldProps.inputRef) {
+                    textFieldProps.inputRef = inputRef;
                 }
-            }, label: ['custom', 'modal'].includes((isCreating ? createDisplayMode : editDisplayMode))
-                ? columnDef.header
-                : undefined, margin: "none", name: column.id, placeholder: !['custom', 'modal'].includes((isCreating ? createDisplayMode : editDisplayMode))
-                ? columnDef.header
-                : undefined, select: isSelectEdit, size: "small", value: value !== null && value !== void 0 ? value : '', variant: "standard" }, textFieldProps, { InputProps: Object.assign(Object.assign(Object.assign({}, (textFieldProps.variant !== 'outlined'
-                ? { disableUnderline: editDisplayMode === 'table' }
-                : {})), textFieldProps.InputProps), { sx: (theme) => {
-                    var _a;
-                    return (Object.assign({ mb: 0 }, parseFromValuesOrFunc((_a = textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.InputProps) === null || _a === void 0 ? void 0 : _a.sx, theme)));
-                } }), SelectProps: {
-                MenuProps: { disableScrollLock: true },
-            }, inputProps: Object.assign({ autoComplete: 'new-password' }, textFieldProps.inputProps), onBlur: handleBlur, onChange: handleChange, onClick: (e) => {
+            }
+        }, label: ['custom', 'modal'].includes((isCreating ? createDisplayMode : editDisplayMode))
+            ? columnDef.header
+            : undefined, margin: "none", name: column.id, placeholder: !['custom', 'modal'].includes((isCreating ? createDisplayMode : editDisplayMode))
+            ? columnDef.header
+            : undefined, select: isSelectEdit, size: "small", value: value !== null && value !== void 0 ? value : '', variant: "standard" }, textFieldProps, { InputProps: Object.assign(Object.assign(Object.assign({}, (textFieldProps.variant !== 'outlined'
+            ? { disableUnderline: editDisplayMode === 'table' }
+            : {})), textFieldProps.InputProps), { sx: (theme) => {
                 var _a;
-                e.stopPropagation();
-                (_a = textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.onClick) === null || _a === void 0 ? void 0 : _a.call(textFieldProps, e);
-            }, onKeyDown: handleEnterKeyDown, children: (_e = textFieldProps.children) !== null && _e !== void 0 ? _e : selectOptions === null || selectOptions === void 0 ? void 0 : selectOptions.map((option) => {
-                const { label, value } = getValueAndLabel(option);
-                return (jsxRuntime.jsx(MenuItem__default["default"], { sx: {
-                        alignItems: 'center',
-                        display: 'flex',
-                        gap: '0.5rem',
-                        m: 0,
-                    }, value: value, children: label }, value));
-            }) })));
+                return (Object.assign({ mb: 0 }, parseFromValuesOrFunc((_a = textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.InputProps) === null || _a === void 0 ? void 0 : _a.sx, theme)));
+            } }), SelectProps: {
+            MenuProps: { disableScrollLock: true },
+        }, inputProps: Object.assign({ autoComplete: 'new-password' }, textFieldProps.inputProps), onBlur: handleBlur, onChange: handleChange, onClick: (e) => {
+            var _a;
+            e.stopPropagation();
+            (_a = textFieldProps === null || textFieldProps === void 0 ? void 0 : textFieldProps.onClick) === null || _a === void 0 ? void 0 : _a.call(textFieldProps, e);
+        }, onKeyDown: handleEnterKeyDown, children: (_e = textFieldProps.children) !== null && _e !== void 0 ? _e : selectOptions === null || selectOptions === void 0 ? void 0 : selectOptions.map((option) => {
+            const { label, value } = getValueAndLabel(option);
+            return (jsxRuntime.jsx(MenuItem__default["default"], { sx: {
+                    alignItems: 'center',
+                    display: 'flex',
+                    gap: '0.5rem',
+                    m: 0,
+                }, value: value, children: label }, value));
+        }) })));
 };
 
 const MRT_TableBodyCell = (_a) => {

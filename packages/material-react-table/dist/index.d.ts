@@ -1583,8 +1583,12 @@ interface MRT_EditActionButtonsProps<TData extends MRT_RowData> extends BoxProps
     row: MRT_Row<TData>;
     table: MRT_TableInstance<TData>;
     variant?: 'icon' | 'text';
+    btnColors?: [
+        ('primary' | 'secondary' | 'inherit' | 'success' | 'error' | 'info' | 'warning'),
+        ('primary' | 'secondary' | 'inherit' | 'success' | 'error' | 'info' | 'warning')
+    ];
 }
-declare const MRT_EditActionButtons: <TData extends MRT_RowData>({ row, table, variant, ...rest }: MRT_EditActionButtonsProps<TData>) => react_jsx_runtime.JSX.Element;
+declare const MRT_EditActionButtons: <TData extends MRT_RowData>({ row, table, variant, btnColors, ...rest }: MRT_EditActionButtonsProps<TData>) => react_jsx_runtime.JSX.Element;
 
 interface MRT_ExpandAllButtonProps<TData extends MRT_RowData> extends IconButtonProps {
     table: MRT_TableInstance<TData>;

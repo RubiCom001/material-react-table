@@ -15,12 +15,33 @@ export interface MRT_EditActionButtonsProps<TData extends MRT_RowData>
   row: MRT_Row<TData>;
   table: MRT_TableInstance<TData>;
   variant?: 'icon' | 'text';
+  btnColors?: [
+    (
+      | 'primary'
+      | 'secondary'
+      | 'inherit'
+      | 'success'
+      | 'error'
+      | 'info'
+      | 'warning'
+    ),
+    (
+      | 'primary'
+      | 'secondary'
+      | 'inherit'
+      | 'success'
+      | 'error'
+      | 'info'
+      | 'warning'
+    ),
+  ];
 }
 
 export const MRT_EditActionButtons = <TData extends MRT_RowData>({
   row,
   table,
   variant = 'icon',
+  btnColors = ['primary', 'secondary'],
   ...rest
 }: MRT_EditActionButtonsProps<TData>) => {
   const {
@@ -81,7 +102,7 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
     });
     setIsEditInConflict(false);
   };
-//console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`);
+  //console.log(`MRTEditActionButtons, isInError: ${isEditWithErrors}`);
 
   const handleSubmitRow = () => {
     //look for auto-filled input values
@@ -124,88 +145,94 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
     >
       {variant === 'icon' ? (
         <>
-        { isEditInConflict &&
-          <>
-        <Tooltip arrow title={localization.merge}>
-            <IconButton
-              aria-label={localization.merge}
-              color="info"
-              onClick={handleMerge}
-            >
-              <MergeIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip arrow title={localization.dismiss}>
-            <IconButton
-              aria-label={localization.dismiss}
-              color="info"
-              onClick={handleDismiss}
-            >
-              <DismissIcon />
-            </IconButton>
-          </Tooltip>
-          </>
-        }
+          {isEditInConflict && (
+            <>
+              <Tooltip arrow title={localization.merge}>
+                <IconButton
+                  aria-label={localization.merge}
+                  color="info"
+                  onClick={handleMerge}
+                >
+                  <MergeIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip arrow title={localization.dismiss}>
+                <IconButton
+                  aria-label={localization.dismiss}
+                  color="info"
+                  onClick={handleDismiss}
+                >
+                  <DismissIcon />
+                </IconButton>
+              </Tooltip>
+            </>
+          )}
 
-
-
-
-          <Tooltip title={!isEditInConflict? localization.cancel:"Accept Remote"}>
+          <Tooltip
+            title={!isEditInConflict ? localization.cancel : 'Accept Remote'}
+          >
             <IconButton aria-label={localization.cancel} onClick={handleCancel}>
               <CancelIcon />
             </IconButton>
           </Tooltip>
           {((isCreating && onCreatingRowSave) ||
-            (isEditing && onEditingRowSave)) && !(isEditWithErrors || isEditInConflict) && (
-            <Tooltip title={localization.save}>
-              <IconButton
-                aria-label={localization.save}
-                color="info"
-                disabled={isSaving}
-                onClick={handleSubmitRow}
-              >
-                {isSaving ? <CircularProgress size={18} /> : <SaveIcon />}
-              </IconButton>
-            </Tooltip>
-          
-          )}
+            (isEditing && onEditingRowSave)) &&
+            !(isEditWithErrors || isEditInConflict) && (
+              <Tooltip title={localization.save}>
+                <IconButton
+                  aria-label={localization.save}
+                  color="info"
+                  disabled={isSaving}
+                  onClick={handleSubmitRow}
+                >
+                  {isSaving ? <CircularProgress size={18} /> : <SaveIcon />}
+                </IconButton>
+              </Tooltip>
+            )}
         </>
       ) : (
         <>
-
-
-
-        { isEditInConflict &&
-        <>
-          <Button onClick={handleMerge} 
-              variant="contained"
-              sx={{ minWidth: '100px' }}>
-              {localization.merge}
-          </Button>
+          {isEditInConflict && (
+            <>
+              <Button
+                onClick={handleMerge}
+                color={btnColors[0]}
+                variant="contained"
+                sx={{ minWidth: '100px' }}
+              >
+                {localization.merge}
+              </Button>
+              <Button
+                //disabled={isSaving}
+                onClick={handleDismiss}
+                sx={{ minWidth: '100px' }}
+                variant="contained"
+                color={btnColors[0]}
+              >
+                {localization.dismiss}
+              </Button>
+            </>
+          )}
           <Button
-              //disabled={isSaving}
-              onClick={handleDismiss}
-              sx={{ minWidth: '100px' }}
-              variant="contained"
-            >
-            {localization.dismiss}
-          </Button>
-        </>
-        }
-          <Button onClick={handleCancel} sx={{ minWidth: '100px' }}>
-            {!isEditInConflict? localization.cancel:"Accept Remote"}
-          </Button>
-          { !(isEditWithErrors || isEditInConflict) &&
-          <Button
-            disabled={isSaving}
-            onClick={handleSubmitRow}
+            onClick={handleCancel}
+            color={btnColors[0]}
             sx={{ minWidth: '100px' }}
             variant="contained"
           >
-            {isSaving && <CircularProgress color="inherit" size={18} />}
-            {localization.save}
+            {!isEditInConflict ? localization.cancel : 'Accept Remote'}
           </Button>
-          }
+          {!(isEditWithErrors || isEditInConflict) && (
+            <Button
+              disabled={isSaving}
+              onClick={handleSubmitRow}
+              sx={{ minWidth: '100px' }}
+              variant="contained"
+              color={btnColors[1]}
+            >
+              {isSaving && <CircularProgress color="inherit" size={18} />}
+              {localization.save}
+            </Button>
+          )}
         </>
       )}
     </Box>
