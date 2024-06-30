@@ -1061,7 +1061,7 @@ type MRT_TableOptions<TData extends MRT_RowData> = Omit<Partial<TableOptions<TDa
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
         values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
-        attachments?: [];
+        attachments?: any[];
     }) => void;
     onDensityChange?: OnChangeFn<MRT_DensityState>;
     onDraggingColumnChange?: OnChangeFn<MRT_Column<TData> | null>;
@@ -1081,7 +1081,7 @@ type MRT_TableOptions<TData extends MRT_RowData> = Omit<Partial<TableOptions<TDa
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
         values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
-        attachments?: [];
+        attachments?: any[];
     }) => Promise<void> | void;
     onEditingRowMerge?: (props: {
         row: MRT_Row<TData>;
@@ -1585,7 +1585,7 @@ interface MRT_EditActionButtonsProps<TData extends MRT_RowData> extends BoxProps
     row: MRT_Row<TData>;
     table: MRT_TableInstance<TData>;
     variant?: 'icon' | 'text';
-    attachments?: [];
+    attachments?: any[];
     btnColors?: [
         ('primary' | 'secondary' | 'inherit' | 'success' | 'error' | 'info' | 'warning'),
         ('primary' | 'secondary' | 'inherit' | 'success' | 'error' | 'info' | 'warning')

@@ -708,7 +708,7 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
 };
 
 const MRT_EditActionButtons = (_a) => {
-    var { row, table, variant = 'icon', btnColors = ['primary', 'secondary'], attachments = [] } = _a, rest = __rest(_a, ["row", "table", "variant", "btnColors", "attachments"]);
+    var { row, table, variant = 'icon', btnColors = ['primary', 'secondary'], attachments } = _a, rest = __rest(_a, ["row", "table", "variant", "btnColors", "attachments"]);
     const { getState, options: { icons: { CancelIcon, SaveIcon, DismissIcon, MergeIcon }, localization, onCreatingRowCancel, onCreatingRowSave, onEditingRowCancel, onEditingRowSave, onEditingRowMerge, onEditingRowDismiss, }, refs: { editInputRefs }, setCreatingRow, setEditingRow, setIsEditInConflict, } = table;
     const { creatingRow, editingRow, isSaving } = getState();
     const { isEditInConflict } = getState();
@@ -766,7 +766,7 @@ const MRT_EditActionButtons = (_a) => {
                 row,
                 table,
                 values: row._valuesCache,
-                attachments: attachments !== null && attachments !== void 0 ? attachments : null,
+                attachments,
             });
         else if (isEditing) {
             onEditingRowSave === null || onEditingRowSave === void 0 ? void 0 : onEditingRowSave({
@@ -774,7 +774,7 @@ const MRT_EditActionButtons = (_a) => {
                 row,
                 table,
                 values: row === null || row === void 0 ? void 0 : row._valuesCache,
-                attachments: attachments !== null && attachments !== void 0 ? attachments : null,
+                attachments,
             });
         }
     };

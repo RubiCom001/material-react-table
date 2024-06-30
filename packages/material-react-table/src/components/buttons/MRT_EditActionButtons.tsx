@@ -15,7 +15,7 @@ export interface MRT_EditActionButtonsProps<TData extends MRT_RowData>
   row: MRT_Row<TData>;
   table: MRT_TableInstance<TData>;
   variant?: 'icon' | 'text';
-  attachments?: [];
+  attachments?: any[];
   btnColors?: [
     (
       | 'primary'
@@ -43,7 +43,7 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
   table,
   variant = 'icon',
   btnColors = ['primary', 'secondary'],
-  attachments = [],
+  attachments,
   ...rest
 }: MRT_EditActionButtonsProps<TData>) => {
   const {
@@ -125,7 +125,7 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
         row,
         table,
         values: row._valuesCache,
-        attachments: attachments ?? null,
+        attachments,
       });
     else if (isEditing) {
       onEditingRowSave?.({
@@ -133,7 +133,7 @@ export const MRT_EditActionButtons = <TData extends MRT_RowData>({
         row,
         table,
         values: row?._valuesCache,
-        attachments: attachments ?? null,
+        attachments,
       });
     }
   };
