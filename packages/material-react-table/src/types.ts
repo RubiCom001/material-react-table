@@ -1180,6 +1180,7 @@ export type MRT_TableOptions<TData extends MRT_RowData> = Omit<
     row: MRT_Row<TData>;
     table: MRT_TableInstance<TData>;
     values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
+    details?: any[];
     attachments?: any[];
   }) => void;
   onDensityChange?: OnChangeFn<MRT_DensityState>;
@@ -1200,6 +1201,7 @@ export type MRT_TableOptions<TData extends MRT_RowData> = Omit<
     row: MRT_Row<TData>;
     table: MRT_TableInstance<TData>;
     values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
+    details?: any[];
     attachments?: any[];
   }) => Promise<void> | void;
   onEditingRowMerge?: (props: {

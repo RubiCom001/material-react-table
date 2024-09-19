@@ -1061,6 +1061,7 @@ type MRT_TableOptions<TData extends MRT_RowData> = Omit<Partial<TableOptions<TDa
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
         values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
+        details?: any[];
         attachments?: any[];
     }) => void;
     onDensityChange?: OnChangeFn<MRT_DensityState>;
@@ -1081,6 +1082,7 @@ type MRT_TableOptions<TData extends MRT_RowData> = Omit<Partial<TableOptions<TDa
         row: MRT_Row<TData>;
         table: MRT_TableInstance<TData>;
         values: Record<LiteralUnion<string & DeepKeys<TData>>, any>;
+        details?: any[];
         attachments?: any[];
     }) => Promise<void> | void;
     onEditingRowMerge?: (props: {
@@ -1585,13 +1587,14 @@ interface MRT_EditActionButtonsProps<TData extends MRT_RowData> extends BoxProps
     row: MRT_Row<TData>;
     table: MRT_TableInstance<TData>;
     variant?: 'icon' | 'text';
+    details?: any[];
     attachments?: any[];
     btnColors?: [
         ('primary' | 'secondary' | 'inherit' | 'success' | 'error' | 'info' | 'warning'),
         ('primary' | 'secondary' | 'inherit' | 'success' | 'error' | 'info' | 'warning')
     ];
 }
-declare const MRT_EditActionButtons: <TData extends MRT_RowData>({ row, table, variant, btnColors, attachments, ...rest }: MRT_EditActionButtonsProps<TData>) => react_jsx_runtime.JSX.Element;
+declare const MRT_EditActionButtons: <TData extends MRT_RowData>({ row, table, variant, btnColors, details, attachments, ...rest }: MRT_EditActionButtonsProps<TData>) => react_jsx_runtime.JSX.Element;
 
 interface MRT_ExpandAllButtonProps<TData extends MRT_RowData> extends IconButtonProps {
     table: MRT_TableInstance<TData>;
